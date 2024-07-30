@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "IRCameraView (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "IRCameraView (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
