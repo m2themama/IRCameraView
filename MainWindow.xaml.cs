@@ -58,9 +58,13 @@ namespace IRCameraView
         {
             if (imageElement.DispatcherQueue != null) imageElement.DispatcherQueue.TryEnqueue(async () =>
             {
-                var imageSource = (SoftwareBitmapSource)imageElement.Source;
-                await imageSource.SetBitmapAsync(bitmap);
-                bitmap.Dispose(); // Important to dispose of.
+                try
+                {
+                    var imageSource = (SoftwareBitmapSource)imageElement.Source;
+                    await imageSource.SetBitmapAsync(bitmap);
+                    bitmap.Dispose(); // Important to dispose of.
+                }
+                catch { }
             });
         }
 

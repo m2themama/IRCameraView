@@ -29,27 +29,52 @@ namespace IRCameraView
 
         public IRController()
         {
-            MediaCapture mediaCapture = new MediaCapture();
+            MediaCapture = new MediaCapture();
 
             //mediaCapture.InitializeAsync().AsTask().Wait();
-            MediaCapture = mediaCapture;
+             //= mediaCapture;
+            //Devices = new List<MediaFrameSourceGroup>();
+            //var devices = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
+
+            //// Filter out the IR camera's
+            //foreach (var device in devices)
+            //{
+            //    var currentDevice = device.SourceInfos.First();
+            //    if (currentDevice.SourceKind == MediaFrameSourceKind.Infrared)
+            //        Devices.Add(device);
+            //}
+            LoadCameras(MediaFrameSourceKind.Infrared);
+
+            if (Devices.Count > 0)
+            {
+                SelectDevice(Devices.FirstOrDefault());
+                
+            }
+            else throw new Exception("No infrared camera's were found.");
+        }
+
+        private List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
+        {
+            return LoadCameras([allowedKind]);
+        }
+
+        private List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind> allowedKinds)
+        {
             Devices = new List<MediaFrameSourceGroup>();
             var devices = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
 
             // Filter out the IR camera's
             foreach (var device in devices)
-            {
-                var currentDevice = device.SourceInfos.First();
-                if (currentDevice.SourceKind == MediaFrameSourceKind.Infrared)
-                    Devices.Add(device);
-            }
+                foreach (var sourceInfo in device.SourceInfos)
+                    if (allowedKinds.Contains(sourceInfo.SourceKind))
+                        Devices.Add(device);
 
-            if (Devices.Count == 0)
-            {
-                Console.WriteLine("No IR Cameras found.");
-            }
+            return Devices;
+        }
 
-            Device = Devices.FirstOrDefault();
+        private void SelectDevice(MediaFrameSourceGroup sourceGroup)
+        {
+            Device = sourceGroup;
 
             MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
             {
@@ -59,27 +84,21 @@ namespace IRCameraView
                 MemoryPreference = MediaCaptureMemoryPreference.Cpu
             };
 
-            mediaCapture.InitializeAsync(settings).AsTask().Wait();
+            MediaCapture.InitializeAsync(settings).AsTask().Wait();
 
-            var frameSources = mediaCapture.FrameSources;
+            var frameSources = MediaCapture.FrameSources;
             var frameSource = frameSources.First().Value;
 
             var preferredFormat = frameSource.SupportedFormats.First();
 
             frameSource.SetFormatAsync(preferredFormat).AsTask().Wait();
 
-            var infraredTorchControl = mediaCapture.VideoDeviceController.InfraredTorchControl;
-            if (infraredTorchControl.IsSupported)
-            {
-                infraredTorchControl.CurrentMode = InfraredTorchMode.AlternatingFrameIllumination;
-            }
-
-            MediaFrameReader = mediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
+            MediaFrameReader = MediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
             MediaFrameReader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
 
             MediaFrameReader.FrameArrived += FrameArrived;
 
-            MediaFrameReader.StartAsync().AsTask().Wait(); 
+            MediaFrameReader.StartAsync().AsTask().Wait();
         }
 
         private void FrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
@@ -100,7 +119,7 @@ namespace IRCameraView
                 while ((latestBitmap = Interlocked.Exchange(ref _backBuffer, null)) != null)
                 {
                     OnFrameReady(latestBitmap);
-                    //latestBitmap.Dispose();
+                    //latestBitmap.Dispose(); Needs to be done by the event handler.
                 }
             }
         }
