@@ -1,16 +1,11 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using Windows.Graphics.Imaging;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Capture;
 using Windows.Media.Playback;
-using Windows.Media.Devices;
-using System.Threading;
-using Windows.Graphics.Imaging;
-using Windows.Devices.I2c;
 
 namespace IRCameraView
 {
@@ -30,26 +25,9 @@ namespace IRCameraView
         public IRController()
         {
             MediaCapture = new MediaCapture();
-
-            //mediaCapture.InitializeAsync().AsTask().Wait();
-             //= mediaCapture;
-            //Devices = new List<MediaFrameSourceGroup>();
-            //var devices = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
-
-            //// Filter out the IR camera's
-            //foreach (var device in devices)
-            //{
-            //    var currentDevice = device.SourceInfos.First();
-            //    if (currentDevice.SourceKind == MediaFrameSourceKind.Infrared)
-            //        Devices.Add(device);
-            //}
             LoadCameras(MediaFrameSourceKind.Infrared);
 
-            if (Devices.Count > 0)
-            {
-                SelectDevice(Devices.FirstOrDefault());
-                
-            }
+            if (Devices.Count > 0) SelectDevice(Devices.FirstOrDefault());
             else throw new Exception("No infrared camera's were found.");
         }
 
