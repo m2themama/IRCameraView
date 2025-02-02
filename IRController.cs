@@ -49,28 +49,12 @@ namespace IRCameraView
                 MemoryPreference = MediaCaptureMemoryPreference.Cpu
             };
 
-            //var a = 
-                mediaCapture.InitializeAsync(settings).AsTask().Wait();
+            mediaCapture.InitializeAsync(settings).AsTask().Wait();
 
-            //mediaCapture.InitializeAsync(settings).AsTask().Wait();
-            //mediaCapture.Failed([this](auto && sender, auto && args) { MediaCaptureErrorHandler(sender, args); });
             var frameSources = mediaCapture.FrameSources;
-            var frameSource = frameSources.First().Value;//\
-
-            //v preferredFormat = frameSource.SupportedFormats().First().Current();
-            //frameSource.SetFormatAsync(preferredFormat).get();
-            //foreach (var frameSourceGroup in frameSources)
-            //{
-            //    var a = frameSources[frameSourceGroup];
-            //}
+            var frameSource = frameSources.First().Value;
 
             var preferredFormat = frameSource.SupportedFormats.First();
-
-            //frameSourframeSource.Value
-
-            //frameSource.set
-            //var preferredFormat = frameSource;
-            //frameSource.SetFormatAsync(preferredFormat).get();
 
             frameSource.SetFormatAsync(preferredFormat).AsTask().Wait();
 
@@ -79,35 +63,11 @@ namespace IRCameraView
             {
                 infraredTorchControl.CurrentMode = InfraredTorchMode.AlternatingFrameIllumination;
             }
-            //m_mediaCapture.StopPreviewAsync();
-            var frameReader = mediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
-            frameReader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
 
             MediaFrameReader = mediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
+            MediaFrameReader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
 
-
-
-            //MediaPlayer = MediaFrameReader.
-
-            //capElement.Stretch(Stretch::Fill);
-            ////capElement.Width(preferredFormat.VideoFormat().Width());
-            ////capElement.Height(preferredFormat.VideoFormat().Height());
-            //capElement.Source(m_mediaCapture);
-            ////capElement.Visibility(Visibility::Collapsed);
-            ////m_mediaCapture.StartPreviewAsync();
-            //auto infraredTorchControl = m_mediaCapture.VideoDeviceController().InfraredTorchControl();
-            //if (infraredTorchControl.IsSupported())
-            //{
-            //    infraredTorchControl.CurrentMode(winrt::Windows::Media::Devices::InfraredTorchMode::AlternatingFrameIllumination);
-            //}
-            ////m_mediaCapture.StopPreviewAsync();
-            //m_frameReader = m_mediaCapture.CreateFrameReaderAsync(frameSource).get();
-            //m_frameReader.AcquisitionMode(MediaFrameReaderAcquisitionMode::Realtime);
-            //m_frameReader.FrameArrived([this](auto && mfr, auto && args) { FrameArrivedHandler(mfr, args); });
-            //MediaFrameReaderStartStatus status = m_frameReader.StartAsync().get();
-
-
-
+            MediaFrameReader.StartAsync().AsTask().Wait();
         }
     }
 }
