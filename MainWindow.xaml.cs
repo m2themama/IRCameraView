@@ -13,9 +13,6 @@ namespace IRCameraView
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private SoftwareBitmap _backBuffer;
-        private bool _taskRunning = false;
-
         public MainWindow()
         {
             InitializeComponent();

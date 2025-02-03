@@ -11,6 +11,10 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+	<!--<PublishSingleFile>true</PublishSingleFile>-->
+	<!--<SelfContained>true</SelfContained>-->
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
 
   <ItemGroup>
