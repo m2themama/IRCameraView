@@ -1,5 +1,6 @@
 using System;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 
@@ -13,6 +14,8 @@ namespace IRCameraView
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private IRController _irController;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,8 +27,8 @@ namespace IRCameraView
         {
             imageElement.Source = new SoftwareBitmapSource();
 
-            IRController irController = new IRController();
-            irController.OnFrameReady += IrController_OnFrameArrived;
+            _irController = new IRController();
+            _irController.OnFrameReady += IrController_OnFrameArrived;
         }
 
         private void IrController_OnFrameArrived(SoftwareBitmap bitmap)
@@ -40,6 +43,15 @@ namespace IRCameraView
                 }
                 catch { }
             });
+        }
+
+        private void FrameFilter_SelectionChanged(object sender, Microsoft.UI.Xaml.Controls.SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox)
+            {
+                var comboBox = sender as ComboBox;
+                _irController.FrameFilter = (IRFrameFilter)comboBox.SelectedIndex;
+            }
         }
     }
 }
