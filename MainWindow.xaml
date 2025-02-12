@@ -8,14 +8,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Image x:Name="imageElement" Stretch="UniformToFill" />
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Image x:Name="imageElement" Stretch="Uniform" />
 
-        <TextBox Text="Frame filter"/>
-        <ComboBox SelectionChanged="FrameFilter_SelectionChanged">
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Dark</ComboBoxItem>
-            <ComboBoxItem>Illuminated</ComboBoxItem>
-        </ComboBox>
+        <Grid>
+            <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
+                <Button Click="TakePhoto_Click">Photo</Button>
+                <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
+                <TextBlock VerticalAlignment="Center">00:00</TextBlock>
+            </StackPanel>
+            <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
+                <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged">
+                    <ComboBoxItem>None</ComboBoxItem>
+                    <ComboBoxItem>Dark</ComboBoxItem>
+                    <ComboBoxItem>Illuminated</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </Window>
