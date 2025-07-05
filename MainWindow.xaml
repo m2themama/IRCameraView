@@ -13,7 +13,8 @@
 
         <Grid>
             <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
-                <Button Click="TakePhoto_Click">Photo</Button>
+          <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
+              <Button Click="TakePhoto_Click">Photo</Button>
                 <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
                 <TextBlock VerticalAlignment="Center">00:00</TextBlock>
             </StackPanel>
