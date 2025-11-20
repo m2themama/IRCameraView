@@ -27,6 +27,13 @@ namespace IRCameraView
         {
             InitializeComponent();
 
+            _irController = new IRController();
+
+            // Populate ComboBox with device names
+            DeviceComboBox.ItemsSource = _irController.GetDeviceNames();
+            if (DeviceComboBox.Items.Count > 0)
+                DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
+
             StartCapture();
         }
 
@@ -34,7 +41,7 @@ namespace IRCameraView
         {
             imageElement.Source = new SoftwareBitmapSource();
 
-            _irController = new IRCameraController();
+            _irController = new IRController();
             _irController.OnFrameReady += IrController_OnFrameArrived;
 
             var photoControl = _irController.Controller.AdvancedPhotoControl;
@@ -65,10 +72,18 @@ namespace IRCameraView
 
         private void FrameFilter_SelectionChanged(object sender, Microsoft.UI.Xaml.Controls.SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox && _irController != null)
+            if (sender is ComboBox comboBox && _irController != null)
             {
-                var comboBox = sender as ComboBox;
                 _irController.FrameFilter = (IRFrameFilter)comboBox.SelectedIndex;
+            }
+        }
+
+        private void DeviceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DeviceComboBox.SelectedIndex >= 0)
+            {
+                _irController.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
+                // Optionally, update UI or start preview, etc.
             }
         }
 
@@ -76,24 +91,23 @@ namespace IRCameraView
         {
             //_irController.\
 
-            StorageFile photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
+            var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
 
             var encodingProperties = new ImageEncodingProperties
             {
                 Subtype = "Y800"
             };
 
-            using (var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite))
-                await _irController.MediaCapture.CapturePhotoToStreamAsync(encodingProperties, stream);
+            using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
+            await _irController.MediaCapture.CapturePhotoToStreamAsync(encodingProperties, stream);
         }
 
         static StorageFile videoFile;
 
         private async void TakeVideo_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton)
+            if (sender is ToggleButton toggleButton)
             {
-                ToggleButton toggleButton = sender as ToggleButton;
                 if (toggleButton.IsChecked ?? true)
                 {
                     videoFile = await KnownFolders.VideosLibrary.CreateFileAsync("IRRecording.mp4", CreationCollisionOption.GenerateUniqueName);
@@ -105,7 +119,7 @@ namespace IRCameraView
                 {
                     await _irController.MediaCapture.StopRecordAsync();
 
-                    ContentDialog successDialog = new ContentDialog()
+                    var successDialog = new ContentDialog()
                     {
                         Title = "Recording Saved",
                         Content = "Video saved to: " + videoFile.Path,

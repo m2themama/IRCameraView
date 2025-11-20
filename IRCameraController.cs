@@ -63,8 +63,8 @@ namespace IRCameraView
             MediaCapture = new MediaCapture();
             LoadCameras(MediaFrameSourceKind.Infrared);
 
-            if (Devices.Count > 0) SelectDevice(Devices.FirstOrDefault());
-            else throw new Exception("No infrared camera's were found.");
+            if (Devices.Count == 0)
+                throw new Exception("No infrared cameras were found.");
         }
 
         private List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
@@ -76,7 +76,7 @@ namespace IRCameraView
         {
             Devices = new List<MediaFrameSourceGroup>();
             var devices = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
-
+                
             // Filter out the IR camera's
             foreach (var device in devices)
                 foreach (var sourceInfo in device.SourceInfos)
@@ -86,9 +86,29 @@ namespace IRCameraView
             return Devices;
         }
 
-        private void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = true)
+        public void SelectDevice(MediaFrameSourceGroup sourceGroup)
         {
-            var settings = new MediaCaptureInitializationSettings
+            // Clean up previous MediaFrameReader
+            if (MediaFrameReader != null)
+            {
+                MediaFrameReader.FrameArrived -= FrameArrived;
+                MediaFrameReader.StopAsync().AsTask().Wait();
+                MediaFrameReader.Dispose();
+                MediaFrameReader = null;
+            }
+
+            // Clean up previous MediaCapture
+            if (MediaCapture != null)
+            {
+                MediaCapture.Dispose();
+                MediaCapture = null;
+            }
+
+            Device = sourceGroup;
+
+            MediaCapture = new MediaCapture();
+
+            MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
             {
                 SourceGroup = SourceGroup = sourceGroup,
                 SharingMode = exclusive ? MediaCaptureSharingMode.ExclusiveControl : MediaCaptureSharingMode.SharedReadOnly,
@@ -142,6 +162,19 @@ namespace IRCameraView
             MediaFrameReader.StartAsync().AsTask().Wait();
         }
 
+        public void SelectDeviceByIndex(int index)
+        {
+            if (index < 0 || index >= Devices.Count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Invalid device index.");
+
+            SelectDevice(Devices[index]);
+        }
+
+        public List<string> GetDeviceNames()
+        {
+            return Devices.Select(d => d.DisplayName).ToList();
+        }
+
 
         public static SoftwareBitmap ConvertToGreenOnly(SoftwareBitmap inputBitmap)
         {
@@ -163,7 +196,7 @@ namespace IRCameraView
             using (var frameReference = sender.TryAcquireLatestFrame())
             {
                 var videoMediaFrame = frameReference?.VideoMediaFrame;
-                
+
                 var softwareBitmap = videoMediaFrame?.SoftwareBitmap;
 
                 if (softwareBitmap == null) return;
@@ -172,7 +205,7 @@ namespace IRCameraView
 
                 softwareBitmap = Interlocked.Exchange(ref _backBuffer, softwareBitmap);
                 softwareBitmap?.Dispose();
-                
+
                 SoftwareBitmap latestBitmap;
                 while ((latestBitmap = Interlocked.Exchange(ref _backBuffer, null)) != null)
                 {
