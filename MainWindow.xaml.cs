@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
+using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
 
@@ -19,7 +20,7 @@ namespace IRCameraView
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private IRController _irController;
+        private IRCameraController _irController;
         //private bool _isRecording = false;
 
         public MainWindow()
@@ -33,8 +34,19 @@ namespace IRCameraView
         {
             imageElement.Source = new SoftwareBitmapSource();
 
-            _irController = new IRController();
+            _irController = new IRCameraController();
             _irController.OnFrameReady += IrController_OnFrameArrived;
+
+            var photoControl = _irController.Controller.AdvancedPhotoControl;
+            if (photoControl.Supported)
+            {
+                PhotoModeBox.ItemsSource = photoControl.SupportedModes;
+                //foreach (var mode in photoControl.SupportedModes)
+                //{
+                //    ComboBoxItem item = new ComboBoxItem();
+                //    PhotoModeBox.ItemsSource = photoControl.SupportedModes;
+                //}
+            }
         }
 
         private void IrController_OnFrameArrived(SoftwareBitmap bitmap)
@@ -102,6 +114,19 @@ namespace IRCameraView
                     await successDialog.ShowAsync();
                 }
             }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox && _irController != null)
+                _irController.MappingMode = (IRMappingMode)(sender as ComboBox).SelectedIndex;
+        }
+
+        private void PhotoModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedMode = (PhotoModeBox.SelectedItem as AdvancedPhotoMode?) ?? AdvancedPhotoMode.Standard;
+            if (selectedMode != null)
+                _irController.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings { Mode = selectedMode});
         }
     }
 }

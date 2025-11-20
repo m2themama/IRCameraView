@@ -6,9 +6,15 @@ using Windows.Graphics.Imaging;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Capture;
 using Windows.Media.Playback;
+using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Media;
 using System.Diagnostics;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using System.IO;
 
 namespace IRCameraView
 {
@@ -19,24 +25,41 @@ namespace IRCameraView
         Illuminated
     }
 
-    public class IRController
+    public enum IRMappingMode
     {
+        None,
+        Green
+    }
+
+    public class IRCameraController
+    {
+        [System.Runtime.InteropServices.Guid("5B0D3235-4DBA-4D44-865E-8F1D0E1B3D3A")]
+        [System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsIUnknown)]
+        interface IMemoryBufferByteAccess
+        {
+            void GetBuffer(out byte[] buffer, out uint capacity);
+        }
+
         public MediaFrameReader MediaFrameReader { get; private set; }
         public MediaPlayer MediaPlayer { get; private set; }
         public MediaCapture MediaCapture { get; private set; }
         public List<MediaFrameSourceGroup> Devices { get; private set; }
-        public MediaFrameSourceGroup Device { get; private set; }
+        public MediaFrameSourceGroup SourceGroup { get; private set; }
 
         public IRFrameFilter FrameFilter { get; set; }
+        public IRMappingMode MappingMode { get; set; }
+
+        public VideoDeviceController Controller { get { return MediaCapture.VideoDeviceController; } }
 
         public delegate void FrameReady(SoftwareBitmap bitmap);
         public event FrameReady OnFrameReady;
 
         private SoftwareBitmap _backBuffer;
 
-        public IRController()
+        public IRCameraController()
         {
             FrameFilter = IRFrameFilter.None;
+            MappingMode = IRMappingMode.None;
             MediaCapture = new MediaCapture();
             LoadCameras(MediaFrameSourceKind.Infrared);
 
@@ -63,35 +86,46 @@ namespace IRCameraView
             return Devices;
         }
 
-        private void SelectDevice(MediaFrameSourceGroup sourceGroup)
+        private void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = true)
         {
-            Device = sourceGroup;
-
-            MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
+            var settings = new MediaCaptureInitializationSettings
             {
-                SourceGroup = Device,
-                SharingMode = MediaCaptureSharingMode.SharedReadOnly,
+                SourceGroup = SourceGroup = sourceGroup,
+                SharingMode = exclusive ? MediaCaptureSharingMode.ExclusiveControl : MediaCaptureSharingMode.SharedReadOnly,
                 StreamingCaptureMode = StreamingCaptureMode.Video,
-                MemoryPreference = MediaCaptureMemoryPreference.Cpu
+                MemoryPreference = MediaCaptureMemoryPreference.Cpu,
             };
 
             MediaCapture.InitializeAsync(settings).AsTask().Wait();
 
-        //    MediaEncodingProfile mediaEncodingProfile = new MediaEncodingProfile();
+            //    MediaEncodingProfile mediaEncodingProfile = new MediaEncodingProfile();
 
-        //MediaEncodingProfile encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Qvga);
+            //MediaEncodingProfile encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Qvga);
 
-        //    Windows.UI.Xaml.Controls.CaptureElement
-        //var mfExtension = await mediaSink.InitializeAsync(encodingProfile.Audio, encodingProfile.Video);
-        //MediaCapture.StartPreviewToCustomSinkAsync(mediaEncodingProfile, mediaExtension);
+            //    Windows.UI.Xaml.Controls.CaptureElement
+            //var mfExtension = await mediaSink.InitializeAsync(encodingProfile.Audio, encodingProfile.Video);
+            //MediaCapture.StartPreviewToCustomSinkAsync(mediaEncodingProfile, mediaExtension);
             //MediaCapture.StartPreviewAsync().AsTask().Wait();
 
-            //var infraredTorchControl = MediaCapture.VideoDeviceController.InfraredTorchControl;
+            var torchControl = MediaCapture.VideoDeviceController.InfraredTorchControl;
+            var flashControl = MediaCapture.VideoDeviceController.FlashControl;
 
-            //if (infraredTorchControl.IsSupported)
-            //{
-            //    //infraredTorchControl.SupportedModes
-            //}
+            if (torchControl.IsSupported)
+            {
+                //infraredTorchControl.SupportedModes
+            }
+
+            var props = MediaCapture.VideoDeviceController;
+
+            var photoControl = MediaCapture.VideoDeviceController.AdvancedPhotoControl;
+
+            foreach (var mode in photoControl.SupportedModes)
+            {
+
+            }
+
+
+
 
             var frameSources = MediaCapture.FrameSources;
             var frameSource = frameSources.First().Value;
@@ -106,6 +140,22 @@ namespace IRCameraView
             MediaFrameReader.FrameArrived += FrameArrived;
 
             MediaFrameReader.StartAsync().AsTask().Wait();
+        }
+
+
+        public static SoftwareBitmap ConvertToGreenOnly(SoftwareBitmap inputBitmap)
+        {
+            if (inputBitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8)
+            {
+                inputBitmap = SoftwareBitmap.Convert(inputBitmap, BitmapPixelFormat.Bgra8);
+            }
+
+            int width = inputBitmap.PixelWidth;
+            int height = inputBitmap.PixelHeight;
+
+            
+
+            return inputBitmap;
         }
 
         private void FrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
@@ -126,6 +176,8 @@ namespace IRCameraView
                 SoftwareBitmap latestBitmap;
                 while ((latestBitmap = Interlocked.Exchange(ref _backBuffer, null)) != null)
                 {
+                    if (MappingMode == IRMappingMode.Green)
+                        latestBitmap = ConvertToGreenOnly(latestBitmap);
                     var isIlluminated = videoMediaFrame.InfraredMediaFrame.IsIlluminated; // This filter gives a similar result to having the torch enabled or disabled even if we can't control the torch. (It halves framerate tho)
                     if (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated))
                         OnFrameReady(latestBitmap);

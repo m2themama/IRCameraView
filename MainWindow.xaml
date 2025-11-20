@@ -24,6 +24,14 @@
                     <ComboBoxItem>Dark</ComboBoxItem>
                     <ComboBoxItem>Illuminated</ComboBoxItem>
                 </ComboBox>
+                <TextBlock Text="Vision" VerticalAlignment="Center"/>
+                <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBoxItem>Standard</ComboBoxItem>
+                    <ComboBoxItem>Night</ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
+                <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
+
             </StackPanel>
         </Grid>
     </StackPanel>
