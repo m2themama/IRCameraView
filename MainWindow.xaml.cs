@@ -9,6 +9,7 @@ using Windows.Media.Capture;
 using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
+using System.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -22,6 +23,7 @@ namespace IRCameraView
     {
         private IRCameraController _irController;
         //private bool _isRecording = false;
+        private List<AdvancedSetting> _advancedSettings;
 
         public MainWindow()
         {
@@ -44,16 +46,25 @@ namespace IRCameraView
             _irController = new IRController();
             _irController.OnFrameReady += IrController_OnFrameArrived;
 
+            InfraredTorchControl torchControl = _irController.Controller.InfraredTorchControl;
+
+            if (torchControl.IsSupported)
+            {
+                TorchControlGrid.Visibility = Visibility.Visible;
+                IRTorchBox.ItemsSource = torchControl.SupportedModes;
+            }
+
             var photoControl = _irController.Controller.AdvancedPhotoControl;
             if (photoControl.Supported)
             {
+                PhotoModeGrid.Visibility = Visibility.Visible;
                 PhotoModeBox.ItemsSource = photoControl.SupportedModes;
-                //foreach (var mode in photoControl.SupportedModes)
-                //{
-                //    ComboBoxItem item = new ComboBoxItem();
-                //    PhotoModeBox.ItemsSource = photoControl.SupportedModes;
-                //}
             }
+        }
+
+        private void BuildSetting(object control)
+        {
+            AdvancedSettingsList.ItemsSource
         }
 
         private void IrController_OnFrameArrived(SoftwareBitmap bitmap)
@@ -141,6 +152,21 @@ namespace IRCameraView
             var selectedMode = (PhotoModeBox.SelectedItem as AdvancedPhotoMode?) ?? AdvancedPhotoMode.Standard;
             if (selectedMode != null)
                 _irController.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings { Mode = selectedMode});
+        }
+
+        private void PhotoModeBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void IRTorchBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        class AdvancedSetting
+        {
+            public AdvancedSetting(object, ) { }
         }
     }
 }

@@ -30,9 +30,17 @@
                     <ComboBoxItem>Standard</ComboBoxItem>
                     <ComboBoxItem>Night</ComboBoxItem>
                 </ComboBox>
-                <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
-                <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
-
+                <!--<Grid Name="AdvancedSettingsPanel">
+                </Grid>-->
+                <ListView Name="AdvancedSettingsList"></ListView>
+                <Grid Name="PhotoModeGrid" Visibility="Collapsed">
+                    <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
+                    <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
+                </Grid>
+                <Grid Name="TorchControlGrid" Visibility="Collapsed">
+                    <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
+                    <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
+                </Grid>
             </StackPanel>
         </Grid>
     </StackPanel>

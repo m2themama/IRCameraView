@@ -127,26 +127,6 @@ namespace IRCameraView
             //MediaCapture.StartPreviewToCustomSinkAsync(mediaEncodingProfile, mediaExtension);
             //MediaCapture.StartPreviewAsync().AsTask().Wait();
 
-            var torchControl = MediaCapture.VideoDeviceController.InfraredTorchControl;
-            var flashControl = MediaCapture.VideoDeviceController.FlashControl;
-
-            if (torchControl.IsSupported)
-            {
-                //infraredTorchControl.SupportedModes
-            }
-
-            var props = MediaCapture.VideoDeviceController;
-
-            var photoControl = MediaCapture.VideoDeviceController.AdvancedPhotoControl;
-
-            foreach (var mode in photoControl.SupportedModes)
-            {
-
-            }
-
-
-
-
             var frameSources = MediaCapture.FrameSources;
             var frameSource = frameSources.First().Value;
 
