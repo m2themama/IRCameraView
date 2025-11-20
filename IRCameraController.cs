@@ -86,7 +86,7 @@ namespace IRCameraView
             return Devices;
         }
 
-        public void SelectDevice(MediaFrameSourceGroup sourceGroup)
+        public void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = true)
         {
             // Clean up previous MediaFrameReader
             if (MediaFrameReader != null)
@@ -104,7 +104,7 @@ namespace IRCameraView
                 MediaCapture = null;
             }
 
-            Device = sourceGroup;
+            SourceGroup = sourceGroup;
 
             MediaCapture = new MediaCapture();
 
