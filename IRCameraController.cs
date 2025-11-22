@@ -7,14 +7,8 @@ using Windows.Media.Capture.Frames;
 using Windows.Media.Capture;
 using Windows.Media.Playback;
 using Windows.Media.Devices;
-using Windows.Media.MediaProperties;
-using Windows.Media;
-using System.Diagnostics;
-using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
-using System.IO;
 
 namespace IRCameraView
 {
@@ -108,6 +102,22 @@ namespace IRCameraView
 
             MediaCapture = new MediaCapture();
 
+            var profiles = MediaCapture.FindAllVideoProfiles(sourceGroup.Id);
+
+            foreach (var profile in profiles)
+            {
+                var infos = profile.FrameSourceInfos.FirstOrDefault();
+                var recordMedia = profile.SupportedRecordMediaDescription.FirstOrDefault();
+                var keys = infos.DeviceInformation.Properties.Keys;
+                var values = infos.DeviceInformation.Properties.Values;
+
+                for (int i = 0; i < keys.Count(); ++i)
+                {
+                    var key = keys.ElementAt(i);
+                    var value = values.ElementAt(i);
+                }
+            }
+
             MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
             {
                 SourceGroup = SourceGroup = sourceGroup,
@@ -165,8 +175,19 @@ namespace IRCameraView
 
             int width = inputBitmap.PixelWidth;
             int height = inputBitmap.PixelHeight;
+            var buffer = new Windows.Storage.Streams.Buffer((uint)(width * height));
+            //Windows.Storage.Streams.Buffer
+            inputBitmap.CopyToBuffer(buffer);
 
-            
+            for (int i = 0; i < 90; i++)
+            {
+                for (global::System.UInt32 j = 0; j < buffer.Length; j++)
+                {
+                    //buffer. = 0;
+                }
+            }
+
+            inputBitmap.CopyFromBuffer(buffer);
 
             return inputBitmap;
         }
