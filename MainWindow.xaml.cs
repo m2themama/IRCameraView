@@ -10,6 +10,7 @@ using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
 using System.Collections.Generic;
+using IRCameraView.Camera;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,7 +22,7 @@ namespace IRCameraView
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private IRCameraController _irController;
+        private CameraController camera;
         //private bool _isRecording = false;
         private List<AdvancedSetting> _advancedSettings;
 
@@ -29,10 +30,10 @@ namespace IRCameraView
         {
             InitializeComponent();
 
-            _irController = new IRCameraController();
+            camera = new CameraController();
 
             // Populate ComboBox with device names
-            DeviceComboBox.ItemsSource = _irController.GetDeviceNames();
+            DeviceComboBox.ItemsSource = camera.GetDeviceNames();
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
@@ -43,10 +44,10 @@ namespace IRCameraView
         {
             imageElement.Source = new SoftwareBitmapSource();
 
-            _irController = new IRCameraController();
-            _irController.OnFrameReady += IrController_OnFrameArrived;
+            camera = new CameraController();
+            camera.OnFrameReady += IrController_OnFrameArrived;
 
-            InfraredTorchControl torchControl = _irController.Controller.InfraredTorchControl;
+            InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
 
             if (torchControl.IsSupported)
             {
@@ -54,7 +55,7 @@ namespace IRCameraView
                 IRTorchBox.ItemsSource = torchControl.SupportedModes;
             }
 
-            var photoControl = _irController.Controller.AdvancedPhotoControl;
+            var photoControl = camera.Controller.AdvancedPhotoControl;
             if (photoControl.Supported)
             {
                 PhotoModeGrid.Visibility = Visibility.Visible;
@@ -83,9 +84,9 @@ namespace IRCameraView
 
         private void FrameFilter_SelectionChanged(object sender, Microsoft.UI.Xaml.Controls.SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox comboBox && _irController != null)
+            if (sender is ComboBox comboBox && camera != null)
             {
-                _irController.FrameFilter = (IRFrameFilter)comboBox.SelectedIndex;
+                camera.FrameFilter = (IRFrameFilter)comboBox.SelectedIndex;
             }
         }
 
@@ -93,7 +94,7 @@ namespace IRCameraView
         {
             if (DeviceComboBox.SelectedIndex >= 0)
             {
-                _irController.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
+                camera.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
                 // Optionally, update UI or start preview, etc.
             }
         }
@@ -110,7 +111,7 @@ namespace IRCameraView
             };
 
             using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
-            await _irController.MediaCapture.CapturePhotoToStreamAsync(encodingProperties, stream);
+            await camera.MediaCapture.CapturePhotoToStreamAsync(encodingProperties, stream);
         }
 
         static StorageFile videoFile;
@@ -124,11 +125,11 @@ namespace IRCameraView
                     videoFile = await KnownFolders.VideosLibrary.CreateFileAsync("IRRecording.mp4", CreationCollisionOption.GenerateUniqueName);
                     var encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Auto);
 
-                    await _irController.MediaCapture.StartRecordToStorageFileAsync(encodingProfile, videoFile);
+                    await camera.MediaCapture.StartRecordToStorageFileAsync(encodingProfile, videoFile);
                 }
                 else
                 {
-                    await _irController.MediaCapture.StopRecordAsync();
+                    await camera.MediaCapture.StopRecordAsync();
 
                     var successDialog = new ContentDialog()
                     {
@@ -143,13 +144,13 @@ namespace IRCameraView
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox && _irController != null)
-                _irController.MappingMode = (IRMappingMode)(sender as ComboBox).SelectedIndex;
+            if (sender is ComboBox && camera != null)
+                camera.MappingMode = (IRMappingMode)(sender as ComboBox).SelectedIndex;
         }
 
         private void PhotoModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _irController.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings {
+            camera.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings {
                 Mode = (PhotoModeBox.SelectedItem as AdvancedPhotoMode?) ?? AdvancedPhotoMode.Standard
             });
         }
@@ -157,7 +158,7 @@ namespace IRCameraView
         private void IRTorchBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedMode = (IRTorchBox.SelectedItem as InfraredTorchMode?) ?? InfraredTorchMode.AlternatingFrameIllumination;
-            _irController.Controller.InfraredTorchControl.CurrentMode = selectedMode;
+            camera.Controller.InfraredTorchControl.CurrentMode = selectedMode;
         }
 
         class AdvancedSetting
