@@ -48,9 +48,6 @@
                         <ComboBoxItem>Standard</ComboBoxItem>
                         <ComboBoxItem>Night</ComboBoxItem>
                     </ComboBox>
-                    <!--<Grid Name="AdvancedSettingsPanel">
-                        </Grid>-->
-                    <!--<ListView Name="AdvancedSettingsList"></ListView>-->
                     <StackPanel Orientation="Horizontal" Name="PhotoModeGrid" Spacing="10" Visibility="Collapsed">
                         <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
                         <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
