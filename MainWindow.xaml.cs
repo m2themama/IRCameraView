@@ -32,6 +32,9 @@ namespace IRCameraView
         public MainWindow()
         {
             InitializeComponent();
+
+            ExtendsContentIntoTitleBar = true;
+
             camera = new CameraController();
             StartCapture();
             ReloadDevices();
