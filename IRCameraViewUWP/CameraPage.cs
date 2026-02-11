@@ -16,6 +16,8 @@ using Windows.Media.Capture.Frames;
 
 using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+
 
 
 
@@ -57,7 +59,13 @@ namespace IRCameraView
         void ReloadDevices()
         {
             // Populate ComboBox with device names
-            DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
+            var namges = camera?.GetDeviceNames();
+            if (namges == null) return;
+            return;
+            ObservableCollection<string> names = new ObservableCollection<string>();
+            names.Add("Camera1");
+            names.Add("Camera2");
+            DeviceComboBox.ItemsSource = names;
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
@@ -94,9 +102,11 @@ namespace IRCameraView
             //AdvancedSettingsList.ItemsSource
         }
 
-        private async Task OnFrameArrived(SoftwareBitmap bitmap)
+        private void OnFrameArrived(SoftwareBitmap bitmap)
         {
-            if (imageElement.Dispatcher != null) await imageElement.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            if (imageElement.Dispatcher == null) return;
+
+            imageElement.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
                 try
                 {
@@ -105,7 +115,7 @@ namespace IRCameraView
                     bitmap.Dispose();
                 }
                 catch { }
-            });
+            }).Wait();
         }
 
         private void FrameFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
