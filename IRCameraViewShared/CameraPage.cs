@@ -42,9 +42,6 @@ namespace IRCameraView
         public CameraPage()
         {
             InitializeComponent();
-
-            
-
             camera = new CameraController();
             StartCapture();
             ReloadDevices();
@@ -210,11 +207,6 @@ namespace IRCameraView
         {
             var selectedMode = (IRTorchBox.SelectedItem as InfraredTorchMode?) ?? InfraredTorchMode.AlternatingFrameIllumination;
             camera.Controller.InfraredTorchControl.CurrentMode = selectedMode;
-        }
-
-        class AdvancedSetting
-        {
-            //public AdvancedSetting(object, ) { }
         }
 
         MediaFrameSourceKind GetSelectedCameraKind()

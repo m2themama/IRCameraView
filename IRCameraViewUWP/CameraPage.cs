@@ -44,6 +44,8 @@ namespace IRCameraView
     public sealed partial class CameraPage : Page
     {
         private CameraController camera;
+        static StorageFile videoFile;
+
 
         public CameraPage()
         {
@@ -148,7 +150,6 @@ namespace IRCameraView
             await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
         }
 
-        static StorageFile videoFile;
 
         private async void TakeVideo_Click(object sender, RoutedEventArgs e)
         {
