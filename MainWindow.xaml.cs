@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using IRCameraView.Camera;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,9 +13,6 @@ using Windows.Media.Capture.Frames;
 using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
-using System.Collections.Generic;
-
-using IRCameraView.Camera;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -129,27 +129,57 @@ namespace IRCameraView
 
         private async void TakeVideo_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton toggleButton)
+            try
             {
-                if (toggleButton.IsChecked ?? true)
+                if (sender is ToggleButton toggleButton)
                 {
-                    videoFile = await KnownFolders.VideosLibrary.CreateFileAsync("IRRecording.mp4", CreationCollisionOption.GenerateUniqueName);
-                    var encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Auto);
-
-                    await camera.MediaCapture.StartRecordToStorageFileAsync(encodingProfile, videoFile);
-                }
-                else
-                {
-                    await camera.MediaCapture.StopRecordAsync();
-
-                    var successDialog = new ContentDialog()
+                    if (toggleButton.IsChecked ?? true)
                     {
-                        Title = "Recording Saved",
-                        Content = "Video saved to: " + videoFile.Path,
-                        CloseButtonText = "OK"
-                    };
-                    await successDialog.ShowAsync();
+                        videoFile = await KnownFolders.VideosLibrary.CreateFileAsync("IRRecording.mp4", CreationCollisionOption.GenerateUniqueName);
+                        var encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Auto);
+
+                        var allVideoProfiles = camera?.Controller?.GetAvailableMediaStreamProperties(MediaStreamType.VideoRecord)?.OfType<VideoEncodingProperties>().ToList();
+                        if (allVideoProfiles == null) return;
+
+                        var first = allVideoProfiles[0];
+
+                        encodingProfile.Video.Width = first.Width;
+                        encodingProfile.Video.Height = first.Height;
+
+                        encodingProfile.Video.FrameRate.Numerator = first.FrameRate.Numerator;
+                        encodingProfile.Video.FrameRate.Denominator = first.FrameRate.Denominator;
+
+                        encodingProfile.Audio = null;
+
+                        await camera?.MediaCapture?.StartRecordToStorageFileAsync(encodingProfile, videoFile);
+                    }
+                    else
+                    {
+                        await camera.MediaCapture.StopRecordAsync();
+
+                        var successDialog = new ContentDialog()
+                        {
+                            Title = "Recording Saved",
+                            Content = "Video saved to: " + videoFile.Path,
+                            CloseButtonText = "OK",
+                            XamlRoot = this.Content.XamlRoot
+                        };
+                        //successDialog.XamlRoot = Window.Current.Content.XamlRoot;
+                        await successDialog.ShowAsync();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                var successDialog = new ContentDialog()
+                {
+                    Title = "Failed to record",
+                    Content = ex.Message,
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                //successDialog.XamlRoot = Window.Current.Content.XamlRoot;
+                await successDialog.ShowAsync();
             }
         }
 
