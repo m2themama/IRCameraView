@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRCameraView", "IRCameraVie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRCameraViewUWP", "IRCameraViewUWP\IRCameraViewUWP.csproj", "{8D4BBD2C-5524-49B9-A392-8A80A137EDFE}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "IRCameraViewShared", "..\IRCameraViewShared\IRCameraViewShared.shproj", "{F204F06A-9ABB-4FD8-8B0E-10AAA59066A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,5 +89,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B58E53CA-5C52-4026-9640-46A0229A8149}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\IRCameraViewShared\IRCameraViewShared.projitems*{f204f06a-9abb-4fd8-8b0e-10aaa59066a4}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
