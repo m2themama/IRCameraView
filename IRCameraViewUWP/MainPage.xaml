@@ -13,8 +13,6 @@
             TintOpacity="0.6"
             FallbackColor="Black" />
     </Page.Background>
-    <!--<Grid Height="100">-->
         
     <Frame Name="MainFrame"/>
-    <!--</Grid>-->
 </Page>
