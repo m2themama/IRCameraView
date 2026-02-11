@@ -65,12 +65,12 @@ namespace IRCameraView.Camera
 				throw new Exception("No infrared cameras were found.");
 		}
 
-        private List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
+        public List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
 		{
 			return LoadCameras([allowedKind]);
 		}
 
-		private List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind>? allowedKinds = null)
+        public List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind>? allowedKinds = null)
 		{
 			Devices = new List<MediaFrameSourceGroup>();
 			var frameSources = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;

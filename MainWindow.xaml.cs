@@ -6,10 +6,12 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
+using Windows.Media.Capture.Frames;
 using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
 using System.Collections.Generic;
+
 using IRCameraView.Camera;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -25,19 +27,24 @@ namespace IRCameraView
         private CameraController camera;
         //private bool _isRecording = false;
         private List<AdvancedSetting> _advancedSettings;
+        //public MediaFrameSourceKind CameraKind { get; set; } = MediaFrameSourceKind.Infrared;
 
         public MainWindow()
         {
             InitializeComponent();
-
             camera = new CameraController();
+            StartCapture();
+            ReloadDevices();
+        }
 
+        void ReloadDevices()
+        {
             // Populate ComboBox with device names
             DeviceComboBox.ItemsSource = camera.GetDeviceNames();
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
-            StartCapture();
+            //CameraType.ItemsSource = CameraKind;
         }
 
         private void StartCapture()
@@ -45,7 +52,7 @@ namespace IRCameraView
             imageElement.Source = new SoftwareBitmapSource();
 
             camera = new CameraController();
-            camera.OnFrameReady += IrController_OnFrameArrived;
+            camera.OnFrameReady += OnFrameArrived;
 
             //InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
 
@@ -68,7 +75,7 @@ namespace IRCameraView
             //AdvancedSettingsList.ItemsSource
         }
 
-        private void IrController_OnFrameArrived(SoftwareBitmap bitmap)
+        private void OnFrameArrived(SoftwareBitmap bitmap)
         {
             if (imageElement.DispatcherQueue != null) imageElement.DispatcherQueue.TryEnqueue(async () =>
             {
@@ -76,7 +83,7 @@ namespace IRCameraView
                 {
                     var imageSource = (SoftwareBitmapSource)imageElement.Source;
                     await imageSource.SetBitmapAsync(bitmap);
-                    bitmap.Dispose(); // Important to dispose of.
+                    bitmap.Dispose();
                 }
                 catch { }
             });
@@ -162,6 +169,22 @@ namespace IRCameraView
         class AdvancedSetting
         {
             //public AdvancedSetting(object, ) { }
+        }
+
+        MediaFrameSourceKind GetSelectedCameraKind()
+        {
+            switch (CameraType.SelectedIndex)
+            {
+                default:
+                case 0: return MediaFrameSourceKind.Infrared;
+                case 1: return MediaFrameSourceKind.Color;
+                case 2: return MediaFrameSourceKind.Depth;
+            }
+        }
+
+        private void CameraType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            camera.LoadCameras(GetSelectedCameraKind());
         }
     }
 }
