@@ -9,8 +9,8 @@
 
   <Identity
     Name="29c7c318-25a3-4626-a539-ba4f95f8b602"
-    Publisher="CN=Lasse"
-    Version="1.0.0.0" />
+    Publisher="CN=Lasse Lauwerys"
+    Version="0.1.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="29c7c318-25a3-4626-a539-ba4f95f8b602" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
