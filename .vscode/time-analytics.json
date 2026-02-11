@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "project": {
-    "totalFocusTime": 344371,
-    "totalActiveTime": 47816
+    "totalFocusTime": 354482,
+    "totalActiveTime": 48844
   },
   "files": {
     "IRCameraView.sln": {
@@ -14,8 +14,8 @@
       "focus": 3651020
     },
     "README.md": {
-      "pending": 46286,
-      "focus": 105942
+      "pending": 47314,
+      "focus": 129371
     }
   }
 }
