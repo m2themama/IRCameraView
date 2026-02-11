@@ -2,6 +2,9 @@
     x:Class="IRCameraView.CameraPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Background>
+        <AcrylicBrush TintOpacity="0.6"/>
+    </Page.Background>
 
     <Grid VerticalAlignment="Bottom" x:Name="Body">
         <Grid.RowDefinitions>

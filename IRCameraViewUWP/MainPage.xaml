@@ -7,8 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Background>
-        <AcrylicBrush Opacity="0.6"/>
+        <AcrylicBrush
+            BackgroundSource="HostBackdrop"
+            TintColor="Black"
+            TintOpacity="0.6"
+            FallbackColor="Black" />
     </Page.Background>
-
+    <!--<Grid Height="100">-->
+        
     <Frame Name="MainFrame"/>
+    <!--</Grid>-->
 </Page>
