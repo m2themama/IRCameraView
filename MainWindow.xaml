@@ -26,8 +26,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Spacing="10" Orientation="Horizontal">
-                    <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" VerticalAlignment="Center">
+                    <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="CameraType" SelectedIndex="0" SelectionChanged="CameraType_SelectionChanged" VerticalAlignment="Center">
                         <ComboBoxItem>Infrared</ComboBoxItem>
                         <ComboBoxItem>Color</ComboBoxItem>
                         <ComboBoxItem>Depth</ComboBoxItem>
@@ -60,14 +60,14 @@
                     <!--<Grid Name="AdvancedSettingsPanel">
                             </Grid>-->
                     <!--<ListView Name="AdvancedSettingsList"></ListView>-->
-                    <Grid Name="PhotoModeGrid" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Name="PhotoModeGrid" Spacing="10" Visibility="Collapsed">
                         <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
                         <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
-                    </Grid>
-                    <Grid Name="TorchControlGrid" Visibility="Collapsed">
+                    </StackPanel>
+                    <StackPanel Name="TorchControlGrid" Spacing="10" Orientation="Horizontal" Visibility="Collapsed">
                         <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
                         <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
-                    </Grid>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

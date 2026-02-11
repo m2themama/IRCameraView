@@ -49,6 +49,23 @@ namespace IRCameraView
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
             //CameraType.ItemsSource = CameraKind;
+
+            if (camera?.Controller == null) return;
+
+            InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
+
+            if (torchControl.IsSupported)
+            {
+                TorchControlGrid.Visibility = Visibility.Visible;
+                IRTorchBox.ItemsSource = torchControl.SupportedModes;
+            }
+
+            var photoControl = camera.Controller.AdvancedPhotoControl;
+            if (photoControl.Supported)
+            {
+                PhotoModeGrid.Visibility = Visibility.Visible;
+                PhotoModeBox.ItemsSource = photoControl.SupportedModes;
+            }
         }
 
         private void StartCapture()
@@ -57,21 +74,6 @@ namespace IRCameraView
 
             camera = new CameraController();
             camera.OnFrameReady += OnFrameArrived;
-
-            //InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
-
-            //if (torchControl.IsSupported)
-            //{
-            //    TorchControlGrid.Visibility = Visibility.Visible;
-            //    IRTorchBox.ItemsSource = torchControl.SupportedModes;
-            //}
-
-            //var photoControl = camera.Controller.AdvancedPhotoControl;
-            //if (photoControl.Supported)
-            //{
-            //    PhotoModeGrid.Visibility = Visibility.Visible;
-            //    PhotoModeBox.ItemsSource = photoControl.SupportedModes;
-            //}
         }
 
         private void BuildSetting(object control)
