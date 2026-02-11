@@ -5,74 +5,10 @@
     xmlns:local="using:IRCameraViewUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Page.Background>
-            <AcrylicBrush
-            BackgroundSource="HostBackdrop"
-            TintColor="Black"
-            TintOpacity="0.6"
-            FallbackColor="Black" />
-        </Page.Background>
+    <Grid>
 
-    <Grid VerticalAlignment="Bottom" x:Name="Body">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
-            <Grid Margin="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*" MinWidth="20"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Spacing="10" Orientation="Horizontal">
-                    <ComboBox x:Name="DeviceComboBox" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="CameraType" SelectedIndex="0" VerticalAlignment="Center">
-                        <ComboBoxItem>Infrared</ComboBoxItem>
-                        <ComboBoxItem>Color</ComboBoxItem>
-                        <ComboBoxItem>Depth</ComboBoxItem>
-                    </ComboBox>
-                    <Button >
-                        <Button.Content>
-                            <SymbolIcon Symbol="Camera" />
-                        </Button.Content>
-                    </Button>
-                    <ToggleButton >
-                        <ToggleButton.Content>
-                            <SymbolIcon Symbol="Video" />
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <TextBlock VerticalAlignment="Center">00:00</TextBlock>
-
-                </StackPanel>
-                <StackPanel Spacing="10" Orientation="Horizontal" Grid.Column="2">
-                    <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
-                    <ComboBox SelectedIndex="0" VerticalAlignment="Center">
-                        <ComboBoxItem>None</ComboBoxItem>
-                        <ComboBoxItem>Dark</ComboBoxItem>
-                        <ComboBoxItem>Illuminated</ComboBoxItem>
-                    </ComboBox>
-                    <TextBlock Text="Vision" VerticalAlignment="Center"/>
-                    <ComboBox SelectedIndex="0" VerticalAlignment="Center">
-                        <ComboBoxItem>Standard</ComboBoxItem>
-                        <ComboBoxItem>Night</ComboBoxItem>
-                    </ComboBox>
-                    <Grid Name="AdvancedSettingsPanel">
-                        </Grid>
-                    <ListView Name="AdvancedSettingsList"></ListView>
-                    <StackPanel Orientation="Horizontal" Name="PhotoModeGrid" Spacing="10" Visibility="Collapsed">
-                        <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
-                        <ComboBox Name="PhotoModeBox"  SelectedIndex="0"/>
-                    </StackPanel>
-                    <StackPanel Name="TorchControlGrid" Spacing="10" Orientation="Horizontal" Visibility="Collapsed">
-                        <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
-                        <ComboBox Name="IRTorchBox"  SelectedIndex="0"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
     </Grid>
 </Page>

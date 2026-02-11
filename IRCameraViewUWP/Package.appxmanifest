@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="ca9ecd13-42bf-4433-94b7-c4101d6b720f"
+    Name="d23589a9-56e5-46c0-bc8a-99873e2bbd24"
     Publisher="CN=Lasse"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="ca9ecd13-42bf-4433-94b7-c4101d6b720f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d23589a9-56e5-46c0-bc8a-99873e2bbd24" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>IRCameraViewUWP</DisplayName>
