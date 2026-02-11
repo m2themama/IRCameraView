@@ -66,4 +66,5 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <Import Project="IRCameraViewShared\IRCameraViewShared.projitems" Label="Shared" />
 </Project>
