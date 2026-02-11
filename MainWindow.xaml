@@ -22,15 +22,15 @@
             </Grid.RowDefinitions>
             <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
-                <Grid>
+                <Grid Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
-                        <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
-                        <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" Margin="10">
+                        <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" VerticalAlignment="Center">
                             <ComboBoxItem>Infrared</ComboBoxItem>
                             <ComboBoxItem>Color</ComboBoxItem>
                             <ComboBoxItem>Depth</ComboBoxItem>
@@ -41,7 +41,7 @@
 
                     </StackPanel>
                     <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" Grid.Column="2">
-                    <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
+                        <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
                         <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
                             <ComboBoxItem>None</ComboBoxItem>
                             <ComboBoxItem>Dark</ComboBoxItem>
