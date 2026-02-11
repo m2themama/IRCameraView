@@ -47,20 +47,20 @@ namespace IRCameraView
             camera = new CameraController();
             camera.OnFrameReady += IrController_OnFrameArrived;
 
-            InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
+            //InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
 
-            if (torchControl.IsSupported)
-            {
-                TorchControlGrid.Visibility = Visibility.Visible;
-                IRTorchBox.ItemsSource = torchControl.SupportedModes;
-            }
+            //if (torchControl.IsSupported)
+            //{
+            //    TorchControlGrid.Visibility = Visibility.Visible;
+            //    IRTorchBox.ItemsSource = torchControl.SupportedModes;
+            //}
 
-            var photoControl = camera.Controller.AdvancedPhotoControl;
-            if (photoControl.Supported)
-            {
-                PhotoModeGrid.Visibility = Visibility.Visible;
-                PhotoModeBox.ItemsSource = photoControl.SupportedModes;
-            }
+            //var photoControl = camera.Controller.AdvancedPhotoControl;
+            //if (photoControl.Supported)
+            //{
+            //    PhotoModeGrid.Visibility = Visibility.Visible;
+            //    PhotoModeBox.ItemsSource = photoControl.SupportedModes;
+            //}
         }
 
         private void BuildSetting(object control)
@@ -101,8 +101,6 @@ namespace IRCameraView
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-            //_irController.\
-
             var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
 
             var encodingProperties = new ImageEncodingProperties
@@ -111,7 +109,7 @@ namespace IRCameraView
             };
 
             using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
-            await camera.MediaCapture.CapturePhotoToStreamAsync(encodingProperties, stream);
+            await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
         }
 
         static StorageFile videoFile;

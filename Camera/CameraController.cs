@@ -9,6 +9,7 @@ using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Devices;
 using Windows.Media.Playback;
+using static IRCameraView.Camera.CameraController;
 
 namespace IRCameraView.Camera
 {
@@ -36,14 +37,16 @@ namespace IRCameraView.Camera
 
 		public MediaFrameReader? MediaFrameReader { get; private set; }
 		public MediaPlayer MediaPlayer { get; private set; }
-		public MediaCapture? MediaCapture { get; private set; }
+		public MediaCapture? MediaCapture { get;
+			private set; }
 		public List<MediaFrameSourceGroup> Devices { get; private set; }
 		public MediaFrameSourceGroup SourceGroup { get; private set; }
 
 		public IRFrameFilter FrameFilter { get; set; }
 		public IRMappingMode MappingMode { get; set; }
 
-		public VideoDeviceController? Controller { get { return MediaCapture != null ? MediaCapture.VideoDeviceController : null; } }
+		public VideoDeviceController? Controller { get {
+				return MediaCapture?.VideoDeviceController; } }
 
 		public delegate void FrameReady(SoftwareBitmap bitmap);
 		public event FrameReady OnFrameReady;
@@ -55,27 +58,27 @@ namespace IRCameraView.Camera
 		{
 			FrameFilter = IRFrameFilter.None;
 			MappingMode = IRMappingMode.None;
-			MediaCapture = new MediaCapture();
+			MediaCapture = null;
 			LoadCameras(MediaFrameSourceKind.Infrared);
 
-			if (Devices.Count == 0)
+			if (Devices?.Count == 0)
 				throw new Exception("No infrared cameras were found.");
 		}
 
-		private List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
+        private List<MediaFrameSourceGroup> LoadCameras(MediaFrameSourceKind allowedKind)
 		{
 			return LoadCameras([allowedKind]);
 		}
 
-		private List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind> allowedKinds)
+		private List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind>? allowedKinds = null)
 		{
 			Devices = new List<MediaFrameSourceGroup>();
-			var devices = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
+			var frameSources = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
 
-			// Filter out the IR camera's
-			foreach (var device in devices)
+			// Filter out unwanted camera types
+			foreach (var device in frameSources)
 				foreach (var sourceInfo in device.SourceInfos)
-					if (allowedKinds.Contains(sourceInfo.SourceKind))
+					if (allowedKinds == null || allowedKinds.Contains(sourceInfo.SourceKind))
 						Devices.Add(device);
 
 			return Devices;
@@ -83,7 +86,6 @@ namespace IRCameraView.Camera
 
 		public void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = true)
 		{
-			// Clean up previous MediaFrameReader
 			if (MediaFrameReader != null)
 			{
 				MediaFrameReader.FrameArrived -= FrameArrived;
@@ -92,16 +94,17 @@ namespace IRCameraView.Camera
 				MediaFrameReader = null;
 			}
 
-			// Clean up previous MediaCapture
+
 			if (MediaCapture != null)
 			{
 				MediaCapture.Dispose();
 				MediaCapture = null;
 			}
 
+
 			SourceGroup = sourceGroup;
 
-			MediaCapture = new MediaCapture();
+			var mediaCapture = new MediaCapture();
 
 			var profiles = MediaCapture.FindAllVideoProfiles(sourceGroup.Id);
 
@@ -127,9 +130,9 @@ namespace IRCameraView.Camera
 				MemoryPreference = MediaCaptureMemoryPreference.Cpu,
 			};
 
-			MediaCapture.InitializeAsync(settings).AsTask().Wait();
+			mediaCapture.InitializeAsync(settings).AsTask().Wait();
 
-			_isInitialized = true;
+			
 
 			//    MediaEncodingProfile mediaEncodingProfile = new MediaEncodingProfile();
 
@@ -140,20 +143,23 @@ namespace IRCameraView.Camera
 			//MediaCapture.StartPreviewToCustomSinkAsync(mediaEncodingProfile, mediaExtension);
 			//MediaCapture.StartPreviewAsync().AsTask().Wait();
 
-			var frameSources = MediaCapture.FrameSources;
+			var frameSources = mediaCapture.FrameSources;
+			if (frameSources.Count == 0) return;
 			var frameSource = frameSources.First().Value;
 
 			var preferredFormat = frameSource.SupportedFormats.First();
 
 			frameSource.SetFormatAsync(preferredFormat).AsTask().Wait();
 
-			MediaFrameReader = MediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
+			MediaFrameReader = mediaCapture.CreateFrameReaderAsync(frameSource).AsTask().Result;
 			MediaFrameReader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
 
 			MediaFrameReader.FrameArrived += FrameArrived;
 
 			MediaFrameReader.StartAsync().AsTask().Wait();
-		}
+
+            MediaCapture = mediaCapture;
+        }
 
 		public void SelectDeviceByIndex(int index)
 		{
@@ -216,7 +222,7 @@ namespace IRCameraView.Camera
 					if (MappingMode == IRMappingMode.Green)
 						latestBitmap = ConvertToGreenOnly(latestBitmap);
 					var isIlluminated = videoMediaFrame.InfraredMediaFrame.IsIlluminated; // This filter gives a similar result to having the torch enabled or disabled even if we can't control the torch. (It halves framerate tho)
-					if (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated))
+					if (OnFrameReady != null && (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated)))
 						OnFrameReady(latestBitmap);
 					//latestBitmap.Dispose(); Needs to be done by the event handler.
 				}

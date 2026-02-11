@@ -8,12 +8,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
         <Image x:Name="imageElement" Stretch="Uniform" />
 
         <Grid>
             <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
-          <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
+                <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
               <Button Click="TakePhoto_Click">Photo</Button>
                 <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
                 <TextBlock VerticalAlignment="Center">00:00</TextBlock>
@@ -43,5 +43,5 @@
                 </Grid>
             </StackPanel>
         </Grid>
-    </StackPanel>
+    </Grid>
 </Window>
