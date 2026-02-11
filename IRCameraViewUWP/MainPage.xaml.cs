@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using IRCameraView;
+using Windows.UI.Xaml.Controls;
 
 namespace IRCameraViewUWP
 {
@@ -10,6 +11,7 @@ namespace IRCameraViewUWP
         public MainPage()
         {
             InitializeComponent();
+            MainFrame.Navigate(typeof(CameraPage));
         }
     }
 }

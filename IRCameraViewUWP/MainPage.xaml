@@ -5,10 +5,10 @@
     xmlns:local="using:IRCameraViewUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
+    <Page.Background>
+        <AcrylicBrush Opacity="0.6"/>
+    </Page.Background>
 
-    <Grid>
-
-    </Grid>
+    <Frame Name="MainFrame"/>
 </Page>
