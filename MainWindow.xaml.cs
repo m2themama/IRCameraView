@@ -43,7 +43,7 @@ namespace IRCameraView
         void ReloadDevices()
         {
             // Populate ComboBox with device names
-            DeviceComboBox.ItemsSource = camera.GetDeviceNames();
+            DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
@@ -187,7 +187,7 @@ namespace IRCameraView
 
         private void CameraType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            camera.LoadCameras(GetSelectedCameraKind());
+            camera?.LoadCameras(GetSelectedCameraKind());
             ReloadDevices();
         }
     }
