@@ -75,4 +75,9 @@
   <ItemGroup>
     <PRIResource Remove="IRCameraViewUWP\**" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="IRCameraViewShared\CameraPage.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
 </Project>

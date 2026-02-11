@@ -1,43 +1,49 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.Graphics.Imaging;
-using Windows.Media.Capture;
-using Windows.Media.Capture.Frames;
-using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
-//using IRCameraView.IRCameraViewShared;
+using Windows.Media.Capture;
+using Windows.Media.Devices;
+using Windows.Media.Capture.Frames;
+using Microsoft.UI.Xaml.Media.Imaging;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.Graphics.Imaging;
+
+#if NETFX_CORE
+// UWP code
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+#else
+// WinUI 3 code
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+#endif
 
 namespace IRCameraView
 {
-    /// <summary>
-    /// The window that displays the camera feed.
-    /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class CameraPage : Page
     {
         private CameraController camera;
-        //private bool _isRecording = false;
-        private List<AdvancedSetting> _advancedSettings;
-        //public MediaFrameSourceKind CameraKind { get; set; } = MediaFrameSourceKind.Infrared;
 
-        public MainWindow()
+        public CameraPage()
         {
             InitializeComponent();
 
-            //CameraFrame.Content = new /*CameraController*/();
-            CameraFrame.Navigate(typeof(CameraPage));
-
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(Body);
+            
 
             camera = new CameraController();
             StartCapture();
@@ -121,7 +127,7 @@ namespace IRCameraView
 
             var encodingProperties = new ImageEncodingProperties
             {
-                
+
             };
 
             using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
@@ -194,7 +200,8 @@ namespace IRCameraView
 
         private void PhotoModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            camera.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings {
+            camera.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings
+            {
                 Mode = (PhotoModeBox.SelectedItem as AdvancedPhotoMode?) ?? AdvancedPhotoMode.Standard
             });
         }

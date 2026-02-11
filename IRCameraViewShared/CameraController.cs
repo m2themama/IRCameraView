@@ -9,9 +9,8 @@ using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Devices;
 using Windows.Media.Playback;
-using static IRCameraView.Camera.CameraController;
 
-namespace IRCameraView.Camera
+namespace IRCameraView
 {
 	public enum IRFrameFilter
 	{
