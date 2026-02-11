@@ -34,6 +34,7 @@ namespace IRCameraView
             InitializeComponent();
 
             ExtendsContentIntoTitleBar = true;
+            SetTitleBar(Body);
 
             camera = new CameraController();
             StartCapture();
@@ -115,7 +116,7 @@ namespace IRCameraView
 
             var encodingProperties = new ImageEncodingProperties
             {
-                Subtype = "Y800"
+                
             };
 
             using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);

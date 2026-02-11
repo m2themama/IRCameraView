@@ -15,32 +15,40 @@
     <Grid>
         
 
-        <Grid VerticalAlignment="Bottom">
+        <Grid VerticalAlignment="Bottom" x:Name="Body">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
-                <Grid Margin="10">
+                <Grid Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="20"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
+                    <StackPanel Spacing="10" Orientation="Horizontal">
                         <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" VerticalAlignment="Center"/>
                         <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" VerticalAlignment="Center">
                             <ComboBoxItem>Infrared</ComboBoxItem>
                             <ComboBoxItem>Color</ComboBoxItem>
                             <ComboBoxItem>Depth</ComboBoxItem>
                         </ComboBox>
-                        <Button Click="TakePhoto_Click">Photo</Button>
-                        <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
+                        <Button Click="TakePhoto_Click">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Camera" />
+                            </Button.Content>
+                        </Button>
+                        <ToggleButton Click="TakeVideo_Click">
+                            <ToggleButton.Content>
+                                <SymbolIcon Symbol="Video" />
+                            </ToggleButton.Content>
+                        </ToggleButton>
                         <TextBlock VerticalAlignment="Center">00:00</TextBlock>
 
                     </StackPanel>
-                    <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" Grid.Column="2">
+                    <StackPanel Spacing="10" Orientation="Horizontal" Grid.Column="2">
                         <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
                         <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
                             <ComboBoxItem>None</ComboBoxItem>
@@ -54,7 +62,7 @@
                         </ComboBox>
                         <!--<Grid Name="AdvancedSettingsPanel">
                             </Grid>-->
-                        <ListView Name="AdvancedSettingsList"></ListView>
+                        <!--<ListView Name="AdvancedSettingsList"></ListView>-->
                         <Grid Name="PhotoModeGrid" Visibility="Collapsed">
                             <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
                             <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
