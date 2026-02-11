@@ -185,6 +185,7 @@ namespace IRCameraView
         private void CameraType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             camera.LoadCameras(GetSelectedCameraKind());
+            ReloadDevices();
         }
     }
 }

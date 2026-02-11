@@ -12,6 +12,9 @@
         <Image x:Name="imageElement" Stretch="Uniform" />
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
                 <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
                 <ComboBox x:Name="CameraType" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" Margin="10">
@@ -25,13 +28,13 @@
             </StackPanel>
             <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
-                <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged">
+                <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
                     <ComboBoxItem>None</ComboBoxItem>
                     <ComboBoxItem>Dark</ComboBoxItem>
                     <ComboBoxItem>Illuminated</ComboBoxItem>
                 </ComboBox>
                 <TextBlock Text="Vision" VerticalAlignment="Center"/>
-                <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged" VerticalAlignment="Center">
                     <ComboBoxItem>Standard</ComboBoxItem>
                     <ComboBoxItem>Night</ComboBoxItem>
                 </ComboBox>
