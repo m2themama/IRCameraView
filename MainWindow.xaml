@@ -21,40 +21,50 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <ScrollViewer Grid.Row="1" HorizontalScrollMode="Enabled">
-                <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
-                    <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" Margin="10">
-                        <ComboBoxItem>Infrared</ComboBoxItem>
-                        <ComboBoxItem>Color</ComboBoxItem>
-                        <ComboBoxItem>Depth</ComboBoxItem>
-                    </ComboBox>
-                    <Button Click="TakePhoto_Click">Photo</Button>
-                    <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
-                    <TextBlock VerticalAlignment="Center">00:00</TextBlock>
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="10" Margin="10" Orientation="Horizontal">
+                        <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" Width="300" Margin="10"/>
+                        <ComboBox x:Name="CameraType" SelectedIndex="0" ItemsSource="" SelectionChanged="CameraType_SelectionChanged" Width="300" Margin="10">
+                            <ComboBoxItem>Infrared</ComboBoxItem>
+                            <ComboBoxItem>Color</ComboBoxItem>
+                            <ComboBoxItem>Depth</ComboBoxItem>
+                        </ComboBox>
+                        <Button Click="TakePhoto_Click">Photo</Button>
+                        <ToggleButton Click="TakeVideo_Click">Video</ToggleButton>
+                        <TextBlock VerticalAlignment="Center">00:00</TextBlock>
+
+                    </StackPanel>
+                    <StackPanel Spacing="10" Margin="10" Orientation="Horizontal" Grid.Column="2">
                     <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
-                    <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
-                        <ComboBoxItem>None</ComboBoxItem>
-                        <ComboBoxItem>Dark</ComboBoxItem>
-                        <ComboBoxItem>Illuminated</ComboBoxItem>
-                    </ComboBox>
-                    <TextBlock Text="Vision" VerticalAlignment="Center"/>
-                    <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged" VerticalAlignment="Center">
-                        <ComboBoxItem>Standard</ComboBoxItem>
-                        <ComboBoxItem>Night</ComboBoxItem>
-                    </ComboBox>
-                    <!--<Grid Name="AdvancedSettingsPanel">
-                        </Grid>-->
-                    <ListView Name="AdvancedSettingsList"></ListView>
-                    <Grid Name="PhotoModeGrid" Visibility="Collapsed">
-                        <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
-                        <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
-                    </Grid>
-                    <Grid Name="TorchControlGrid" Visibility="Collapsed">
-                        <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
-                        <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
-                    </Grid>
-                </StackPanel>
+                        <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
+                            <ComboBoxItem>None</ComboBoxItem>
+                            <ComboBoxItem>Dark</ComboBoxItem>
+                            <ComboBoxItem>Illuminated</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Text="Vision" VerticalAlignment="Center"/>
+                        <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged" VerticalAlignment="Center">
+                            <ComboBoxItem>Standard</ComboBoxItem>
+                            <ComboBoxItem>Night</ComboBoxItem>
+                        </ComboBox>
+                        <!--<Grid Name="AdvancedSettingsPanel">
+                            </Grid>-->
+                        <ListView Name="AdvancedSettingsList"></ListView>
+                        <Grid Name="PhotoModeGrid" Visibility="Collapsed">
+                            <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
+                            <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
+                        </Grid>
+                        <Grid Name="TorchControlGrid" Visibility="Collapsed">
+                            <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
+                            <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
             </ScrollViewer>
         </Grid>
     </Grid>
