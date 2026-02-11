@@ -13,4 +13,22 @@
     <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <DefineConstants>$(DefineConstants);NETFX_CORE</DefineConstants>
+  </PropertyGroup>
 </Project>
