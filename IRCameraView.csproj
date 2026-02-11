@@ -18,6 +18,12 @@
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
 	<!--<CreateMSIXPackage>True</CreateMSIXPackage>-->
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="IRCameraViewUWP\**" />
+    <EmbeddedResource Remove="IRCameraViewUWP\**" />
+    <None Remove="IRCameraViewUWP\**" />
+    <Page Remove="IRCameraViewUWP\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -66,5 +72,7 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  <Import Project="IRCameraViewShared\IRCameraViewShared.projitems" Label="Shared" />
+  <ItemGroup>
+    <PRIResource Remove="IRCameraViewUWP\**" />
+  </ItemGroup>
 </Project>

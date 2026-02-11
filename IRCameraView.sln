@@ -90,8 +90,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B58E53CA-5C52-4026-9640-46A0229A8149}
 	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		IRCameraViewShared\IRCameraViewShared.projitems*{7baefa4b-e23f-4780-89bd-b126255ebf2c}*SharedItemsImports = 5
-		IRCameraViewShared\IRCameraViewShared.projitems*{f204f06a-9abb-4fd8-8b0e-10aaa59066a4}*SharedItemsImports = 13
-	EndGlobalSection
 EndGlobal
