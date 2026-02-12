@@ -51,7 +51,17 @@ namespace IRCameraView
 		public IRFrameFilter FrameFilter { get; set; }
 		public IRMappingMode MappingMode { get; set; }
 
-        SoftwareBitmap latestBitmap;
+        public SoftwareBitmap LatestBitmap { get
+			{
+				return _latestBitmap;
+			}
+			set
+			{
+				if(_latestBitmap!=null) _latestBitmap.Dispose();
+				_latestBitmap = value;
+			}
+		}
+        private SoftwareBitmap _latestBitmap;
 
 
         public VideoDeviceController? Controller { get {
@@ -185,7 +195,19 @@ namespace IRCameraView
 
 		public void CaptureImage()
 		{
-			SaveBitmap(latestBitmap);
+			//SoftwareBitmap newa;
+			//latestBitmap.CopyTo(newa);
+
+            SaveBitmap(SoftwareBitmap.Copy(LatestBitmap));
+
+        }
+
+        public void CaptureImage(SoftwareBitmap bitmap)
+        {
+            //SoftwareBitmap newa;
+            //latestBitmap.CopyTo(newa);
+
+            SaveBitmap(SoftwareBitmap.Copy(bitmap));
 
         }
 
@@ -261,18 +283,23 @@ namespace IRCameraView
 					softwareBitmap = SoftwareBitmap.Convert(softwareBitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
 
 				softwareBitmap = Interlocked.Exchange(ref _backBuffer, softwareBitmap);
-				softwareBitmap?.Dispose();
 
-				while ((latestBitmap = Interlocked.Exchange(ref _backBuffer, null)) != null)
+				SoftwareBitmap hi;
+				while ((hi = Interlocked.Exchange(ref _backBuffer, null)) != null)
 				{
-					if (MappingMode == IRMappingMode.Green)
-						latestBitmap = ConvertToGreenOnly(latestBitmap);
+					LatestBitmap = SoftwareBitmap.Copy(hi);
+
+                    if (MappingMode == IRMappingMode.Green)
+                        LatestBitmap = ConvertToGreenOnly(LatestBitmap);
+
 					var isIlluminated = videoMediaFrame.InfraredMediaFrame.IsIlluminated; // This filter gives a similar result to having the torch enabled or disabled even if we can't control the torch. (It halves framerate tho)
 					if (OnFrameReady != null && (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated)))
-						OnFrameReady(latestBitmap);
+						OnFrameReady(LatestBitmap);
 					//latestBitmap.Dispose(); Needs to be done by the event handler.
 				}
-			}
+
+                softwareBitmap?.Dispose();
+            }
 		}
 	}
 }

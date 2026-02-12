@@ -96,7 +96,7 @@ namespace IRCameraView
                 {
                     var imageSource = (SoftwareBitmapSource)imageElement.Source;
                     await imageSource.SetBitmapAsync(bitmap);
-                    bitmap.Dispose();
+                    //bitmap.Dispose();
                 }
                 catch { }
             });
@@ -131,7 +131,7 @@ namespace IRCameraView
 
             //using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
             //await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
-
+            //var imageSource = (SoftwareBitmapSource)imageElement.Source;
             camera.CaptureImage();
         }
 
