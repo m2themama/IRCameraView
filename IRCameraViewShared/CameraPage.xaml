@@ -9,11 +9,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="ImageGrid" Margin="10">
+            <!--<Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>-->
             <Image x:Name="ImageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
         </Grid>
         <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
-            <Button Click="TakePhoto_Click" Width="70" Height="70">
+            <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70">
                 <Button.Resources>
                     <Style TargetType="Button">
                         <Setter Property="CornerRadius" Value="45"/>
@@ -69,6 +72,11 @@
                     <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged" VerticalAlignment="Center">
                         <ComboBoxItem>Standard</ComboBoxItem>
                         <ComboBoxItem>Night</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Text="Preview mode" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="PreviewModeBox" SelectedIndex="0" SelectionChanged="PreviewModeBox_SelectionChanged"  VerticalAlignment="Center">
+                        <ComboBoxItem>Cover</ComboBoxItem>
+                        <ComboBoxItem>Fit</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
             </Grid>

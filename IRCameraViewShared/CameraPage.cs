@@ -60,7 +60,7 @@ namespace IRCameraView
             StartCapture();
             ReloadDevices();
 
-            SetEnabmeMargin();
+            //SetEnabmeMargin();
         }
 
         void ReloadDevices()
@@ -105,12 +105,13 @@ namespace IRCameraView
 
         void SetEnabmeMargin()
         {
-            var margein = new Thickness(20);//margerine
-            margein.Top += 32;// for itlebar
-            ImageGrid.Margin = margein;
+            var margin = new Thickness(20);
+            margin.Top += 32;
+            margin.Right *= 2;
+            margin.Right += PhotoButton.Width;
+            ImageGrid.Margin = margin;
 
             ImageElement.Stretch = Stretch.Uniform;
-            //ImageGrid.Margin.Top = 32;
         }
 
         void DisableMargin()
@@ -245,6 +246,12 @@ namespace IRCameraView
         {
             if (sender is ComboBox && camera != null)
                 camera.MappingMode = (IRMappingMode)(sender as ComboBox).SelectedIndex;
+        }
+
+        private void PreviewModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PreviewModeBox.SelectedIndex == 1) SetEnabmeMargin();
+            if (PreviewModeBox.SelectedIndex == 0) DisableMargin();
         }
 
         private void PhotoModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
