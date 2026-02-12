@@ -8,13 +8,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <TextBlock Text="Camera" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Margin="10" HorizontalTextAlignment="Center" />
         <Grid x:Name="ImageGrid">
             <Viewbox x:Name="ImageViewbox" Stretch="UniformToFill">
                 <Border CornerRadius="5">
+                    <Grid>
                     <Image x:Name="ImageElement" />
+                    <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
+                    </Grid>
                 </Border>
             </Viewbox>
-            <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
         </Grid>
         <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
             <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70">

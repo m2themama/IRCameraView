@@ -106,53 +106,20 @@ namespace IRCameraView
 
         }
 
-        void AnimateImageGrid(double targetWidth, double targetHeight, double offsetX, double offsetY, double durationMs = 300)
-        {
-            var visual = ElementCompositionPreview.GetElementVisual(ImageGrid);
-            var compositor = visual.Compositor;
-
-            var offsetAnim = compositor.CreateVector3KeyFrameAnimation();
-            offsetAnim.InsertKeyFrame(1f, new Vector3((float)offsetX, (float)offsetY, 0));
-            offsetAnim.Duration = TimeSpan.FromMilliseconds(durationMs);
-            visual.StartAnimation(nameof(visual.Offset), offsetAnim);
-
-            var sizeAnim = compositor.CreateVector2KeyFrameAnimation();
-            sizeAnim.InsertKeyFrame(1f, new Vector2((float)targetWidth, (float)targetHeight));
-            sizeAnim.Duration = TimeSpan.FromMilliseconds(durationMs);
-            visual.StartAnimation("Size", sizeAnim);
-
-            
-
-            ImageViewbox.Stretch = (targetWidth > targetHeight) ? Stretch.Uniform : Stretch.UniformToFill;
-        }
-
         void EnableMargin()
         {
-            //double newWidth = ImageGrid.ActualWidth - 20 - PhotoButton.ActualWidth - PhotoButton.Margin.Left;
-            //double newHeight = ImageGrid.ActualHeight - 40 - SettingsViewer.ActualHeight;
-
-            double offsetX = 20;
-            double offsetY = 32 + 20;
-            double parentWidth = Body.ActualWidth;
-            double parentHeight = Body.ActualHeight;
-
-            double targetWidth = parentWidth - (20 + 110);
-            double targetHeight = parentHeight - (52 + 20);
-
-            AnimateImageGrid(targetWidth, targetHeight, offsetX, offsetY);
-            //var margin = new Thickness(20);
-            //margin.Top += 32;
-            //margin.Right *= 2;
-            //margin.Right += PhotoButton.Width;
-            //ImageGrid.Margin = margin;
+            var margin = new Thickness(20);
+            margin.Top += 32;
+            margin.Right *= 2;
+            margin.Right += PhotoButton.Width;
+            ImageGrid.Margin = margin;
 
             ImageViewbox.Stretch = Stretch.Uniform;
         }
 
         void DisableMargin()
         {
-            AnimateImageGrid(ImageGrid.ActualWidth, ImageGrid.ActualHeight, 0, 0);
-            //ImageGrid.Margin = new Thickness(0);
+            ImageGrid.Margin = new Thickness(0);
 
             ImageViewbox.Stretch = Stretch.UniformToFill;
         }
