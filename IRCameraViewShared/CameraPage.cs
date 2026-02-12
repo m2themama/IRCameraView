@@ -59,6 +59,8 @@ namespace IRCameraView
             camera = new CameraController();
             StartCapture();
             ReloadDevices();
+
+            SetEnabmeMargin();
         }
 
         void ReloadDevices()
@@ -101,20 +103,36 @@ namespace IRCameraView
 
         }
 
+        void SetEnabmeMargin()
+        {
+            var margein = new Thickness(20);//margerine
+            margein.Top += 32;// for itlebar
+            ImageGrid.Margin = margein;
+
+            ImageElement.Stretch = Stretch.Uniform;
+            //ImageGrid.Margin.Top = 32;
+        }
+
+        void DisableMargin()
+        {
+            ImageGrid.Margin = new Thickness(0);
+            ImageElement.Stretch = Stretch.UniformToFill;
+        }
+
         private void StartCapture()
         {
-            imageElement.Source = new SoftwareBitmapSource();
+            ImageElement.Source = new SoftwareBitmapSource();
 
             camera = new CameraController();
             camera.OnFrameReady += OnFrameArrived;
         }
         private void OnFrameArrived(SoftwareBitmap bitmap)
         {
-            if (imageElement.Dispatcher != null) imageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
+            if (ImageElement.Dispatcher != null) ImageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
             {
                 try
                 {
-                    var imageSource = (SoftwareBitmapSource)imageElement.Source;
+                    var imageSource = (SoftwareBitmapSource)ImageElement.Source;
                     await imageSource.SetBitmapAsync(bitmap);
                 }
                 catch { }
