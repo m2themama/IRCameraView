@@ -70,7 +70,7 @@ namespace IRCameraView
 
         public Grid GetTitleBar()
         {
-            return TitlebarGripper;
+            return TitleBarGripper;
         }
 
         void ReloadDevices()

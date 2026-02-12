@@ -12,7 +12,7 @@
         <Grid>
             <TextBlock Text="Camera" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center"/>
         </Grid>
-        <Grid x:Name="TitlebarGripper" Grid.RowSpan="2"/>
+        <Grid x:Name="TitleBarGripper" Grid.RowSpan="2"/>
         <Grid x:Name="ImageGrid" Grid.RowSpan="2" >
             <Grid>
                 <Viewbox x:Name="ImageViewbox" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
