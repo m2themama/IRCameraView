@@ -195,20 +195,12 @@ namespace IRCameraView
 
 		public void CaptureImage()
 		{
-			//SoftwareBitmap newa;
-			//latestBitmap.CopyTo(newa);
-
-            SaveBitmap(SoftwareBitmap.Copy(LatestBitmap));
-
+            CaptureImage(LatestBitmap);
         }
 
         public void CaptureImage(SoftwareBitmap bitmap)
         {
-            //SoftwareBitmap newa;
-            //latestBitmap.CopyTo(newa);
-
             SaveBitmap(SoftwareBitmap.Copy(bitmap));
-
         }
 
         private async Task SaveBitmap(SoftwareBitmap bitmap)
@@ -217,7 +209,7 @@ namespace IRCameraView
             try
             {
 
-                StorageFile file = await KnownFolders.PicturesLibrary.CreateFileAsync("ee-a.jpg", CreationCollisionOption.GenerateUniqueName);
+                StorageFile file = await KnownFolders.PicturesLibrary.CreateFileAsync("Infrared.jpg", CreationCollisionOption.GenerateUniqueName);
 
                 using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
@@ -295,7 +287,6 @@ namespace IRCameraView
 					var isIlluminated = videoMediaFrame.InfraredMediaFrame.IsIlluminated; // This filter gives a similar result to having the torch enabled or disabled even if we can't control the torch. (It halves framerate tho)
 					if (OnFrameReady != null && (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated)))
 						OnFrameReady(LatestBitmap);
-					//latestBitmap.Dispose(); Needs to be done by the event handler.
 				}
 
                 softwareBitmap?.Dispose();

@@ -82,12 +82,6 @@ namespace IRCameraView
             camera = new CameraController();
             camera.OnFrameReady += OnFrameArrived;
         }
-
-        private void BuildSetting(object control)
-        {
-            //AdvancedSettingsList.ItemsSource
-        }
-
         private void OnFrameArrived(SoftwareBitmap bitmap)
         {
             if (imageElement.DispatcherQueue != null) imageElement.DispatcherQueue.TryEnqueue(async () =>
@@ -96,7 +90,6 @@ namespace IRCameraView
                 {
                     var imageSource = (SoftwareBitmapSource)imageElement.Source;
                     await imageSource.SetBitmapAsync(bitmap);
-                    //bitmap.Dispose();
                 }
                 catch { }
             });
@@ -114,24 +107,11 @@ namespace IRCameraView
         {
             if (camera == null) return;
             if (DeviceComboBox.SelectedIndex >= 0)
-            {
                 camera.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
-                // Optionally, update UI or start preview, etc.
-            }
         }
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-            //var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.bmp", CreationCollisionOption.GenerateUniqueName);
-            //var encodingProperties = ImageEncodingProperties.CreateUncompressed(MediaPixelFormat.Bgra8);
-            ////var encodingProperties = new ImageEncodingProperties
-            ////{
-
-            ////};
-
-            //using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
-            //await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
-            //var imageSource = (SoftwareBitmapSource)imageElement.Source;
             camera.CaptureImage();
         }
 
@@ -171,9 +151,8 @@ namespace IRCameraView
                             Title = "Recording Saved",
                             Content = "Video saved to: " + videoFile.Path,
                             CloseButtonText = "OK",
-                            XamlRoot = this.Content.XamlRoot
+                            XamlRoot = Content.XamlRoot
                         };
-                        //successDialog.XamlRoot = Window.Current.Content.XamlRoot;
                         await successDialog.ShowAsync();
                     }
                 }
@@ -185,9 +164,8 @@ namespace IRCameraView
                     Title = "Failed to record",
                     Content = ex.Message,
                     CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
+                    XamlRoot = Content.XamlRoot
                 };
-                //successDialog.XamlRoot = Window.Current.Content.XamlRoot;
                 await successDialog.ShowAsync();
             }
         }
