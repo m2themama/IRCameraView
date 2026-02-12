@@ -13,10 +13,11 @@ using Windows.Storage;
 using Windows.Media.Capture;
 using Windows.Media.Devices;
 using Windows.Media.Capture.Frames;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+
 
 
 #if NETFX_CORE
@@ -25,6 +26,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+//using Windows.UI.Xaml.Media
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 #else
 // WinUI 3 code
@@ -32,6 +35,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 #endif
@@ -54,7 +58,13 @@ namespace IRCameraView
         void ReloadDevices()
         {
             // Populate ComboBox with device names
-            DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
+            try
+            {
+                DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
+            }
+            catch (Exception ex)
+            {
+            }
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
@@ -87,7 +97,7 @@ namespace IRCameraView
         }
         private void OnFrameArrived(SoftwareBitmap bitmap)
         {
-            if (imageElement.DispatcherQueue != null) imageElement.DispatcherQueue.TryEnqueue(async () =>
+            if (imageElement.Dispatcher != null) imageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
             {
                 try
                 {
@@ -95,10 +105,10 @@ namespace IRCameraView
                     await imageSource.SetBitmapAsync(bitmap);
                 }
                 catch { }
-            });
+            }).Wait();
         }
 
-        private void FrameFilter_SelectionChanged(object sender, Microsoft.UI.Xaml.Controls.SelectionChangedEventArgs e)
+        private void FrameFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox && camera != null)
             {
@@ -179,20 +189,20 @@ namespace IRCameraView
             FlashOverlay.Opacity = 1;
             await Task.Delay(100);
 
-            var fadeDuration = TimeSpan.FromMilliseconds(200);
-            var animation = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
-            {
-                From = 1,
-                To = 0,
-                Duration = new Duration(fadeDuration)
-            };
-            var storyboard = new Storyboard();
-            storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, FlashOverlay);
-            Storyboard.SetTargetProperty(animation, "Opacity");
-            storyboard.Begin();
+            //var fadeDuration = TimeSpan.FromMilliseconds(200);
+            //var animation = new Animation.DoubleAnimation
+            //{
+            //    From = 1,
+            //    To = 0,
+            //    Duration = new Duration(fadeDuration)
+            //};
+            //var storyboard = new Storyboard();
+            //storyboard.Children.Add(animation);
+            //Storyboard.SetTarget(animation, FlashOverlay);
+            //Storyboard.SetTargetProperty(animation, "Opacity");
+            //storyboard.Begin();
 
-            await Task.Delay((int)fadeDuration.TotalMilliseconds);
+            //await Task.Delay((int)fadeDuration.TotalMilliseconds);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

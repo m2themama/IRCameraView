@@ -9,10 +9,11 @@
     <Import_RootNamespace>IRCameraViewShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CameraControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CameraPage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)CameraControl.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)CameraPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
