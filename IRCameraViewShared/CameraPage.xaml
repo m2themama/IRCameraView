@@ -8,11 +8,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="ImageGrid">
-            <!--<Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>-->
-            <Image x:Name="ImageElement" Stretch="Fill" />
+        <Grid x:Name="ImageGrid">
+            <Viewbox Stretch="Uniform">
+            <Border CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image x:Name="ImageElement" Stretch="Fill" />
+            </Border>
             <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
         </Grid>
         <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
