@@ -10,6 +10,21 @@
         </Grid.RowDefinitions>
         <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
+        <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
+            <Button Click="TakePhoto_Click" Width="60" Height="60">
+                <Button.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Content>
+                    <SymbolIcon Symbol="Camera" />
+                </Button.Content>
+                <Button.Background>
+                    
+                </Button.Background>
+            </Button>
+        </Grid>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
@@ -24,16 +39,7 @@
                         <ComboBoxItem>Color</ComboBoxItem>
                         <ComboBoxItem>Depth</ComboBoxItem>
                     </ComboBox>
-                    <Button Click="TakePhoto_Click" Width="50" Height="50">
-                        <Button.Resources>
-                            <Style TargetType="Button">
-                                <Setter Property="CornerRadius" Value="25"/>
-                            </Style>
-                        </Button.Resources>
-                        <Button.Content>
-                            <SymbolIcon Symbol="Camera" />
-                        </Button.Content>
-                    </Button>
+                    
                     <ToggleButton Click="TakeVideo_Click">
                         <ToggleButton.Content>
                             <SymbolIcon Symbol="Video" />
