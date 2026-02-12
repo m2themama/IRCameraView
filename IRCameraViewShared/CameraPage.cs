@@ -122,15 +122,17 @@ namespace IRCameraView
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-            var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.bmp", CreationCollisionOption.GenerateUniqueName);
-            var encodingProperties = ImageEncodingProperties.CreateUncompressed(MediaPixelFormat.Bgra8);
-            //var encodingProperties = new ImageEncodingProperties
-            //{
+            //var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.bmp", CreationCollisionOption.GenerateUniqueName);
+            //var encodingProperties = ImageEncodingProperties.CreateUncompressed(MediaPixelFormat.Bgra8);
+            ////var encodingProperties = new ImageEncodingProperties
+            ////{
 
-            //};
+            ////};
 
-            using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
-            await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
+            //using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
+            //await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
+
+            camera.CaptureImage();
         }
 
 

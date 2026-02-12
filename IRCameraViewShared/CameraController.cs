@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.ApplicationModel.VoiceCommands;
+using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Devices;
 using Windows.Media.Playback;
+using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace IRCameraView
 {
@@ -46,7 +51,10 @@ namespace IRCameraView
 		public IRFrameFilter FrameFilter { get; set; }
 		public IRMappingMode MappingMode { get; set; }
 
-		public VideoDeviceController? Controller { get {
+        SoftwareBitmap latestBitmap;
+
+
+        public VideoDeviceController? Controller { get {
 				return MediaCapture?.VideoDeviceController; } }
 
 		public delegate void FrameReady(SoftwareBitmap bitmap);
@@ -175,8 +183,40 @@ namespace IRCameraView
 			return Devices.Select(d => d.DisplayName).ToList();
 		}
 
+		public void CaptureImage()
+		{
+			SaveBitmap(latestBitmap);
 
-		public static SoftwareBitmap ConvertToGreenOnly(SoftwareBitmap inputBitmap)
+        }
+
+        private async Task SaveBitmap(SoftwareBitmap bitmap)
+        {
+			if (bitmap == null) return;
+            try
+            {
+
+                StorageFile file = await KnownFolders.PicturesLibrary.CreateFileAsync("ee-a.jpg", CreationCollisionOption.GenerateUniqueName);
+
+                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+					
+                    encoder.SetSoftwareBitmap(bitmap);
+
+                    var propertySet = new BitmapPropertySet();
+                    var qualityValue = new BitmapTypedValue(0.9, PropertyType.Single);
+                    propertySet.Add("ImageQuality", qualityValue);
+
+                    await encoder.FlushAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to save image: {ex.Message}");
+            }
+        }
+
+        public static SoftwareBitmap ConvertToGreenOnly(SoftwareBitmap inputBitmap)
 		{
             if (inputBitmap == null)
                 throw new ArgumentNullException(nameof(inputBitmap));
@@ -223,7 +263,6 @@ namespace IRCameraView
 				softwareBitmap = Interlocked.Exchange(ref _backBuffer, softwareBitmap);
 				softwareBitmap?.Dispose();
 
-				SoftwareBitmap latestBitmap;
 				while ((latestBitmap = Interlocked.Exchange(ref _backBuffer, null)) != null)
 				{
 					if (MappingMode == IRMappingMode.Green)
