@@ -19,16 +19,6 @@
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
 	<!--<CreateMSIXPackage>True</CreateMSIXPackage>-->
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="IRCameraViewShared\**" />
-    <Compile Remove="IRCameraViewUWP\**" />
-    <EmbeddedResource Remove="IRCameraViewShared\**" />
-    <EmbeddedResource Remove="IRCameraViewUWP\**" />
-    <None Remove="IRCameraViewShared\**" />
-    <None Remove="IRCameraViewUWP\**" />
-    <Page Remove="IRCameraViewShared\**" />
-    <Page Remove="IRCameraViewUWP\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -80,9 +70,15 @@
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
   <ItemGroup>
-    <PRIResource Remove="IRCameraViewUWP\**" />
+    <Compile Remove="IRCameraViewShared\**" />
+    <Compile Remove="IRCameraViewUWP\**" />
+    <EmbeddedResource Remove="IRCameraViewShared\**" />
+    <EmbeddedResource Remove="IRCameraViewUWP\**" />
+    <None Remove="IRCameraViewShared\**" />
+    <None Remove="IRCameraViewUWP\**" />
+    <Page Remove="IRCameraViewShared\**" />
+    <Page Remove="IRCameraViewUWP\**" />
   </ItemGroup>
-  <Import Project="IRCameraViewShared\IRCameraViewShared.projitems" Label="Shared" />
   <ItemGroup>
     <Compile Remove="C:\Users\Lasse\source\repos\IRCameraView\IRCameraViewShared\CameraController.cs" />
     <Compile Remove="C:\Users\Lasse\source\repos\IRCameraView\IRCameraViewShared\CameraPage.cs" />
@@ -96,4 +92,8 @@
   <ItemGroup>
     <PRIResource Remove="IRCameraViewShared\**" />
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="IRCameraViewUWP\**" />
+  </ItemGroup>
+  <Import Project="IRCameraViewShared\IRCameraViewShared.projitems" Label="Shared" />
 </Project>
