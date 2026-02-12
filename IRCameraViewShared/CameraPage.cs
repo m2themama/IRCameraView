@@ -17,6 +17,8 @@ using Windows.Media.Capture.Frames;
 using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using System.Collections.ObjectModel;
+
 
 
 
@@ -47,10 +49,14 @@ namespace IRCameraView
         private CameraController camera;
         static StorageFile videoFile;
 
+        public ObservableCollection<string> CameraNames { get; } = new ObservableCollection<string>();
+
         public CameraPage()
         {
             InitializeComponent();
             camera = new CameraController();
+            //CameraNames.Add("Meowzer");
+            Loaded += CameraPage_Loaded;
             StartCapture();
             ReloadDevices();
         }
@@ -60,15 +66,13 @@ namespace IRCameraView
             // Populate ComboBox with device names
             try
             {
-                DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
+                //DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
             }
             catch (Exception ex)
             {
             }
-            if (DeviceComboBox.Items.Count > 0)
-                DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
-
-            //CameraType.ItemsSource = CameraKind;
+            //if (DeviceComboBox.Items.Count > 0)
+            //    DeviceComboBox.SelectedIndex = 0;
 
             if (camera?.Controller == null) return;
 
@@ -86,6 +90,17 @@ namespace IRCameraView
                 PhotoModeGrid.Visibility = Visibility.Visible;
                 PhotoModeBox.ItemsSource = photoControl.SupportedModes;
             }
+        }
+
+        private async void CameraPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            camera = new CameraController();
+
+            DeviceComboBox.SelectionChanged -= DeviceComboBox_SelectionChanged;
+
+            ReloadDevices();
+
+            DeviceComboBox.SelectionChanged += DeviceComboBox_SelectionChanged;
         }
 
         private void StartCapture()
