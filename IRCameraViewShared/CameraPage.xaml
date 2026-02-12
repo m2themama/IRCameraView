@@ -24,7 +24,12 @@
                         <ComboBoxItem>Color</ComboBoxItem>
                         <ComboBoxItem>Depth</ComboBoxItem>
                     </ComboBox>
-                    <Button Click="TakePhoto_Click">
+                    <Button Click="TakePhoto_Click" Width="50" Height="50">
+                        <Button.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="CornerRadius" Value="25"/>
+                            </Style>
+                        </Button.Resources>
                         <Button.Content>
                             <SymbolIcon Symbol="Camera" />
                         </Button.Content>
@@ -34,7 +39,7 @@
                             <SymbolIcon Symbol="Video" />
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <TextBlock VerticalAlignment="Center">00:00</TextBlock>
+                    <TextBlock x:Name="VideoTimeLabel" VerticalAlignment="Center">00:00</TextBlock>
 
                 </StackPanel>
                 <StackPanel Spacing="10" Orientation="Horizontal" Grid.Column="2">
