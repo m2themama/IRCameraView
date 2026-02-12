@@ -98,10 +98,21 @@ namespace IRCameraView
 
             DeviceComboBox.SelectionChanged -= DeviceComboBox_SelectionChanged;
 
-            ReloadDevices();
-
-            DeviceComboBox.SelectionChanged += DeviceComboBox_SelectionChanged;
+            DeviceComboBox.Items.Add("kak");
         }
+
+            //ReloadDevices();
+        //    Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+        //    {
+        //        DeviceComboBox.SelectedIndex = -1;
+        //    DeviceComboBox.ItemsSource = null;
+
+
+        //    DeviceComboBox.ItemsSource = CameraNames;
+
+        //    DeviceComboBox.SelectionChanged += DeviceComboBox_SelectionChanged;
+        //    });
+        //}
 
         private void StartCapture()
         {

@@ -1,4 +1,7 @@
 ﻿using IRCameraView;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 
 namespace IRCameraViewUWP
@@ -12,6 +15,12 @@ namespace IRCameraViewUWP
         {
             InitializeComponent();
             MainFrame.Navigate(typeof(CameraPage));
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
     }
 }
