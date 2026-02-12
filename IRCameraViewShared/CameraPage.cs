@@ -18,6 +18,8 @@ using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Media.Animation;
+
 
 
 
@@ -213,22 +215,27 @@ namespace IRCameraView
         private async Task FlashScreenAsync()
         {
             FlashOverlay.Opacity = 1;
+
             await Task.Delay(100);
 
-            //var fadeDuration = TimeSpan.FromMilliseconds(200);
-            //var animation = new Animation.DoubleAnimation
-            //{
-            //    From = 1,
-            //    To = 0,
-            //    Duration = new Duration(fadeDuration)
-            //};
-            //var storyboard = new Storyboard();
-            //storyboard.Children.Add(animation);
-            //Storyboard.SetTarget(animation, FlashOverlay);
-            //Storyboard.SetTargetProperty(animation, "Opacity");
-            //storyboard.Begin();
+            var fadeDuration = TimeSpan.FromMilliseconds(200);
+            var animation = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = new Duration(fadeDuration),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
 
-            //await Task.Delay((int)fadeDuration.TotalMilliseconds);
+            var storyboard = new Storyboard();
+            storyboard.Children.Add(animation);
+
+            Storyboard.SetTarget(animation, FlashOverlay);
+            Storyboard.SetTargetProperty(animation, "Opacity");
+
+            storyboard.Begin();
+
+            await Task.Delay(fadeDuration);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
