@@ -9,7 +9,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="ImageGrid">
-            <Viewbox x:Name="c" Stretch="UniformToFill">
+            <Viewbox x:Name="ImageViewbox" Stretch="UniformToFill">
                 <Border CornerRadius="5">
                     <Image x:Name="ImageElement" />
                 </Border>
