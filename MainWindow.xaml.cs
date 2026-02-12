@@ -30,7 +30,14 @@ namespace IRCameraView
 
             ExtendsContentIntoTitleBar = true;
             CameraFrame.Navigate(typeof(CameraPage));
-            SetTitleBar(CameraFrame);
+
+            var currentPage = CameraFrame.Content as CameraPage;
+            if (currentPage != null)
+            {
+                SetTitleBar(currentPage.GetTitleBar());
+            }
+
+            //SetTitleBar();
         }
     }
 }

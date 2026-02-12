@@ -68,6 +68,11 @@ namespace IRCameraView
             ReloadDevices();
         }
 
+        public Grid GetTitleBar()
+        {
+            return TitlebarGripper;
+        }
+
         void ReloadDevices()
         {
             DeviceComboBox.Items.Clear();
