@@ -116,14 +116,21 @@ namespace IRCameraView
             margin.Right += PhotoButton.Width;
             ImageGrid.Margin = margin;
 
-            ImageViewbox.Stretch = Stretch.Uniform;
+            ImageElement.Stretch = Stretch.Uniform;
+#if NETFX_CORE
+ImageBorder.CornerRadius = new CornerRadius(0);
+#else
+            ImageBorder.CornerRadius = new CornerRadius(6);
+#endif
+
         }
 
         void DisableMargin()
         {
             ImageGrid.Margin = new Thickness(0);
+            ImageBorder.CornerRadius = new CornerRadius(0);
 
-            ImageViewbox.Stretch = Stretch.UniformToFill;
+            ImageElement.Stretch = Stretch.UniformToFill;
         }
 
         private void StartCapture()
@@ -154,23 +161,12 @@ namespace IRCameraView
                 }
                 catch { }
             }).Wait();
-            //if (ImageElement.Dispatcher != null) ImageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
-            //{
-            //    try
-            //    {
-            //        var imageSource = (SoftwareBitmapSource)ImageElement.Source;
-            //        await imageSource.SetBitmapAsync(bitmap);
-            //    }
-            //    catch { }
-            //}).Wait();
         }
 
         private void FrameFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox && camera != null)
-            {
                 camera.FrameFilter = (IRFrameFilter)comboBox.SelectedIndex;
-            }
         }
 
         private void DeviceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
