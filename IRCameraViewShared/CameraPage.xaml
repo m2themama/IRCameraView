@@ -26,7 +26,7 @@
             </Grid>
         </Grid>
         <Grid Grid.RowSpan="3" HorizontalAlignment="Right" Width="Auto" Margin="20">
-            <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70">
+            <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                 <Button.Resources>
                     <Style TargetType="Button">
                         <Setter Property="CornerRadius" Value="45"/>
@@ -35,9 +35,9 @@
                 <Button.Content>
                     <SymbolIcon Symbol="Camera" />
                 </Button.Content>
-                <Button.Background>
-                    <AcrylicBrush TintColor="Black" TintOpacity="0.8" FallbackColor="Black" />
-                </Button.Background>
+                <!--<Button.Background>
+                    <AcrylicBrush TintColor="{ThemeResource SystemBaseLowColor}" TintOpacity="0.8" FallbackColor="{ThemeResource SystemBaseLowColor}" />
+                </Button.Background>-->
             </Button>
         </Grid>
         <ScrollViewer x:Name="SettingsViewer" Grid.Row="2" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
