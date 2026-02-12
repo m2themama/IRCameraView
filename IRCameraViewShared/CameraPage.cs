@@ -116,7 +116,7 @@ namespace IRCameraView
             margin.Right += PhotoButton.Width;
             ImageGrid.Margin = margin;
 
-            ImageElement.Stretch = Stretch.Uniform;
+            ImageViewbox.Stretch = Stretch.Uniform;
 #if NETFX_CORE
 ImageBorder.CornerRadius = new CornerRadius(0);
 #else
@@ -130,7 +130,7 @@ ImageBorder.CornerRadius = new CornerRadius(0);
             ImageGrid.Margin = new Thickness(0);
             ImageBorder.CornerRadius = new CornerRadius(0);
 
-            ImageElement.Stretch = Stretch.UniformToFill;
+            ImageViewbox.Stretch = Stretch.UniformToFill;
         }
 
         private void StartCapture()

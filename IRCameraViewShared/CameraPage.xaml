@@ -16,16 +16,16 @@
             <TextBlock Text="Camera" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center"/>
         </Grid>
         <Grid x:Name="ImageGrid" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <!--<Grid HorizontalAlignment="Center" VerticalAlignment="Center">-->
-            <Viewbox x:Name="ImageViewbox"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
-                <Border x:Name="ImageBorder" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Viewbox x:Name="ImageViewbox" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border x:Name="ImageBorder" CornerRadius="6">
                     <Grid HorizontalAlignment="Center">
-                        <Image x:Name="ImageElement"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False" HorizontalAlignment="Center"/>
+                        <Image x:Name="ImageElement"/>
+                        <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
                     </Grid>
                 </Border>
             </Viewbox>
-            <!--</Grid>-->
+            </Grid>
         </Grid>
         <Grid Grid.RowSpan="3" HorizontalAlignment="Right" Width="Auto" Margin="20">
             <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70">
