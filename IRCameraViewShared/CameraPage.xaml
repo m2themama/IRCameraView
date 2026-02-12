@@ -38,6 +38,14 @@
 
                 </StackPanel>
                 <StackPanel Spacing="10" Orientation="Horizontal" Grid.Column="2">
+                    <StackPanel Name="TorchControlGrid" Spacing="10" Orientation="Horizontal" Visibility="Collapsed">
+                        <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
+                        <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Name="PhotoModeGrid" Spacing="10" Visibility="Collapsed">
+                        <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
+                        <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
+                    </StackPanel>
                     <TextBlock Text="Frame filter" VerticalAlignment="Center"/>
                     <ComboBox SelectedIndex="0" SelectionChanged="FrameFilter_SelectionChanged" VerticalAlignment="Center">
                         <ComboBoxItem>None</ComboBoxItem>
@@ -49,14 +57,6 @@
                         <ComboBoxItem>Standard</ComboBoxItem>
                         <ComboBoxItem>Night</ComboBoxItem>
                     </ComboBox>
-                    <StackPanel Orientation="Horizontal" Name="PhotoModeGrid" Spacing="10" Visibility="Collapsed">
-                        <TextBlock Text="Photo Mode" VerticalAlignment="Center"/>
-                        <ComboBox Name="PhotoModeBox"  SelectedIndex="0" SelectionChanged="PhotoModeBox_SelectionChanged"/>
-                    </StackPanel>
-                    <StackPanel Name="TorchControlGrid" Spacing="10" Orientation="Horizontal" Visibility="Collapsed">
-                        <TextBlock Text="IR Torch" VerticalAlignment="Center"/>
-                        <ComboBox Name="IRTorchBox"  SelectedIndex="0" SelectionChanged="IRTorchBox_SelectionChanged"/>
-                    </StackPanel>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
