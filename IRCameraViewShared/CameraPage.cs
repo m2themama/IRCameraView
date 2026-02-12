@@ -18,6 +18,7 @@ using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using System.Collections.ObjectModel;
+using System.Numerics;
 
 
 
@@ -105,36 +106,40 @@ namespace IRCameraView
 
         }
 
-        void EnableMargin()
+        void AnimateImageGrid(double targetWidth, double targetHeight, double offsetX, double offsetY, double durationMs = 300)
         {
             var visual = ElementCompositionPreview.GetElementVisual(ImageGrid);
             var compositor = visual.Compositor;
 
-            // Calculate offset you want (simulates Margin change)
-            var targetOffset = new System.Numerics.Vector3(
-                x: (float)(20 + PhotoButton.ActualWidth * 2),
-                y: (float)(32 + 20),
-                z: 0f);
+            var offsetAnim = compositor.CreateVector3KeyFrameAnimation();
+            offsetAnim.InsertKeyFrame(1f, new Vector3((float)offsetX, (float)offsetY, 0));
+            offsetAnim.Duration = TimeSpan.FromMilliseconds(durationMs);
+            visual.StartAnimation(nameof(visual.Offset), offsetAnim);
 
-            var animation = compositor.CreateVector3KeyFrameAnimation();
-            animation.InsertKeyFrame(1f, targetOffset);
-            animation.Duration = TimeSpan.FromMilliseconds(300);
+            var sizeAnim = compositor.CreateVector2KeyFrameAnimation();
+            sizeAnim.InsertKeyFrame(1f, new Vector2((float)targetWidth, (float)targetHeight));
+            sizeAnim.Duration = TimeSpan.FromMilliseconds(durationMs);
+            visual.StartAnimation("Size", sizeAnim);
 
-            visual.StartAnimation(nameof(visual.Offset), animation);
+            ImageViewbox.Stretch = (targetWidth > targetHeight) ? Stretch.Uniform : Stretch.UniformToFill;
+        }
+
+        void EnableMargin()
+        {
+            double newWidth = ImageGrid.ActualWidth - 20 - PhotoButton.ActualWidth - PhotoButton.Margin.Left;  // example
+            double newHeight = ImageGrid.ActualHeight - 40 - SettingsViewer.ActualHeight;
+
+            double offsetX = -20;
+            double offsetY = 32 + 20;
+
+            AnimateImageGrid(newWidth, newHeight, offsetX, offsetY);
 
             ImageViewbox.Stretch = Stretch.Uniform;
         }
 
         void DisableMargin()
         {
-            var visual = ElementCompositionPreview.GetElementVisual(ImageGrid);
-            var compositor = visual.Compositor;
-
-            var animation = compositor.CreateVector3KeyFrameAnimation();
-            animation.InsertKeyFrame(1f, new System.Numerics.Vector3(0, 0, 0));
-            animation.Duration = TimeSpan.FromMilliseconds(300);
-
-            visual.StartAnimation(nameof(visual.Offset), animation);
+            AnimateImageGrid(ImageGrid.ActualWidth, ImageGrid.ActualHeight, 0, 0);
 
             ImageViewbox.Stretch = Stretch.UniformToFill;
         }
