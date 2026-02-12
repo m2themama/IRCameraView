@@ -18,7 +18,6 @@ using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Media.Animation;
 
 
 
@@ -30,6 +29,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 //using Windows.UI.Xaml.Media
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -109,13 +109,13 @@ namespace IRCameraView
             margin.Right += PhotoButton.Width;
             ImageGrid.Margin = margin;
 
-            ImageElement.Stretch = Stretch.Uniform;
+            ImageViewbox.Stretch = Stretch.Uniform;
         }
 
         void DisableMargin()
         {
             ImageGrid.Margin = new Thickness(0);
-            ImageElement.Stretch = Stretch.UniformToFill;
+            ImageViewbox.Stretch = Stretch.UniformToFill;
         }
 
         private void StartCapture()

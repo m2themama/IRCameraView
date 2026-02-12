@@ -9,10 +9,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="ImageGrid">
-            <Viewbox Stretch="Uniform">
-            <Border CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Image x:Name="ImageElement" Stretch="Fill" />
-            </Border>
+            <Viewbox x:Name="c" Stretch="UniformToFill">
+                <Border CornerRadius="5">
+                    <Image x:Name="ImageElement" />
+                </Border>
+            </Viewbox>
             <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
         </Grid>
         <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
