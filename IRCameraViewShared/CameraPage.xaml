@@ -21,7 +21,7 @@
                     <SymbolIcon Symbol="Camera" />
                 </Button.Content>
                 <Button.Background>
-                    
+                    <AcrylicBrush TintColor="Black" TintOpacity="0.6" FallbackColor="Black" />
                 </Button.Background>
             </Button>
         </Grid>
