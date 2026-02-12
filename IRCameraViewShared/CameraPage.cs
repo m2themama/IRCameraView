@@ -23,10 +23,13 @@ using System.Collections.ObjectModel;
 
 
 
+
 #if NETFX_CORE
 // UWP code
+using Windows.UI.Composition;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -37,6 +40,7 @@ using Windows.UI.Xaml.Navigation;
 // WinUI 3 code
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -103,18 +107,35 @@ namespace IRCameraView
 
         void EnableMargin()
         {
-            var margin = new Thickness(20);
-            margin.Top += 32;
-            margin.Right *= 2;
-            margin.Right += PhotoButton.Width;
-            ImageGrid.Margin = margin;
+            var visual = ElementCompositionPreview.GetElementVisual(ImageGrid);
+            var compositor = visual.Compositor;
+
+            // Calculate offset you want (simulates Margin change)
+            var targetOffset = new System.Numerics.Vector3(
+                x: (float)(20 + PhotoButton.ActualWidth * 2),
+                y: (float)(32 + 20),
+                z: 0f);
+
+            var animation = compositor.CreateVector3KeyFrameAnimation();
+            animation.InsertKeyFrame(1f, targetOffset);
+            animation.Duration = TimeSpan.FromMilliseconds(300);
+
+            visual.StartAnimation(nameof(visual.Offset), animation);
 
             ImageViewbox.Stretch = Stretch.Uniform;
         }
 
         void DisableMargin()
         {
-            ImageGrid.Margin = new Thickness(0);
+            var visual = ElementCompositionPreview.GetElementVisual(ImageGrid);
+            var compositor = visual.Compositor;
+
+            var animation = compositor.CreateVector3KeyFrameAnimation();
+            animation.InsertKeyFrame(1f, new System.Numerics.Vector3(0, 0, 0));
+            animation.Duration = TimeSpan.FromMilliseconds(300);
+
+            visual.StartAnimation(nameof(visual.Offset), animation);
+
             ImageViewbox.Stretch = Stretch.UniformToFill;
         }
 
