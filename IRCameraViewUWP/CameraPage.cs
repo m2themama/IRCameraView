@@ -56,6 +56,8 @@ namespace IRCameraView
             camera = new CameraController();
             StartCapture();
             ReloadDevices();
+
+            camera.SelectDeviceByIndex(0);
         }
 
         void ReloadDevices()
@@ -63,11 +65,23 @@ namespace IRCameraView
             // Populate ComboBox with device names
             var namges = camera?.GetDeviceNames();
             if (namges == null) return;
-            return;
+            //return;
             ObservableCollection<string> names = new ObservableCollection<string>();
             names.Add("Camera1");
             names.Add("Camera2");
-            DeviceComboBox.ItemsSource = names;
+            try
+            {
+                DeviceComboBox.SelectedIndex = -1;
+                //DeviceComboBox.ItemsSource = names;
+                DeviceComboBox.SelectedIndex = 0;
+            } catch { }
+
+    //        DeviceComboBox.Dispatcher.RunAsync(
+    //Windows.UI.Core.CoreDispatcherPriority.Normal,
+    //() =>
+    //{
+    //    DeviceComboBox.ItemsSource = names;
+    //}).Wait();
             if (DeviceComboBox.Items.Count > 0)
                 DeviceComboBox.SelectedIndex = 0; // Optionally select the first device by default
 
@@ -99,11 +113,6 @@ namespace IRCameraView
             camera.OnFrameReady += OnFrameArrived;
         }
 
-        private void BuildSetting(object control)
-        {
-            //AdvancedSettingsList.ItemsSource
-        }
-
         private void OnFrameArrived(SoftwareBitmap bitmap)
         {
             if (imageElement.Dispatcher == null) return;
@@ -131,10 +140,7 @@ namespace IRCameraView
         private void DeviceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DeviceComboBox.SelectedIndex >= 0)
-            {
                 camera.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
-                // Optionally, update UI or start preview, etc.
-            }
         }
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
@@ -200,7 +206,7 @@ namespace IRCameraView
                     Title = "Failed to record",
                     Content = ex.Message,
                     CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
+                    XamlRoot = this.Content?.XamlRoot
                 };
                 //successDialog.XamlRoot = Window.Current.Content.XamlRoot;
                 await successDialog.ShowAsync();
@@ -215,7 +221,7 @@ namespace IRCameraView
 
         private void PhotoModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            camera.Controller.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings
+            camera?.Controller?.AdvancedPhotoControl.Configure(new AdvancedPhotoCaptureSettings
             {
                 Mode = (PhotoModeBox.SelectedItem as AdvancedPhotoMode?) ?? AdvancedPhotoMode.Standard
             });
@@ -224,7 +230,7 @@ namespace IRCameraView
         private void IRTorchBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedMode = (IRTorchBox.SelectedItem as InfraredTorchMode?) ?? InfraredTorchMode.AlternatingFrameIllumination;
-            camera.Controller.InfraredTorchControl.CurrentMode = selectedMode;
+            camera?.Controller?.InfraredTorchControl.CurrentMode = selectedMode;
         }
 
         class AdvancedSetting

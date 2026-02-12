@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
@@ -176,29 +178,35 @@ namespace IRCameraView
 
 		public static SoftwareBitmap ConvertToGreenOnly(SoftwareBitmap inputBitmap)
 		{
-			if (inputBitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8)
-			{
-				inputBitmap = SoftwareBitmap.Convert(inputBitmap, BitmapPixelFormat.Bgra8);
-			}
+            if (inputBitmap == null)
+                throw new ArgumentNullException(nameof(inputBitmap));
 
-			int width = inputBitmap.PixelWidth;
-			int height = inputBitmap.PixelHeight;
-			var buffer = new Windows.Storage.Streams.Buffer((uint)(width * height));
-			//Windows.Storage.Streams.Buffer
-			inputBitmap.CopyToBuffer(buffer);
+            var bitmap = inputBitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
+                ? SoftwareBitmap.Convert(inputBitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied)
+                : SoftwareBitmap.Copy(inputBitmap);
 
-			for (int i = 0; i < 90; i++)
-			{
-				for (global::System.UInt32 j = 0; j < buffer.Length; j++)
-				{
-					//buffer. = 0;
-				}
-			}
+            int width = bitmap.PixelWidth;
+            int height = bitmap.PixelHeight;
 
-			inputBitmap.CopyFromBuffer(buffer);
+            byte[] pixels = new byte[width * height * 4];
+            bitmap.CopyToBuffer(pixels.AsBuffer());
 
-			return inputBitmap;
-		}
+            for (int i = 0; i < pixels.Length; i += 4)
+            {
+                byte g = pixels[i + 1];
+                byte a = pixels[i + 3];
+
+                pixels[i + 0] = 0;
+                pixels[i + 1] = g;
+                pixels[i + 2] = 0;
+                pixels[i + 3] = a;
+            }
+
+            var result = new SoftwareBitmap(BitmapPixelFormat.Bgra8, width, height, BitmapAlphaMode.Premultiplied);
+            result.CopyFromBuffer(pixels.AsBuffer());
+
+            return result;
+        }
 
 		private void FrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
 		{

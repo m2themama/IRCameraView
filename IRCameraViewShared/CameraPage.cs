@@ -38,6 +38,7 @@ namespace IRCameraView
     public sealed partial class CameraPage : Page
     {
         private CameraController camera;
+        static StorageFile videoFile;
 
         public CameraPage()
         {
@@ -111,6 +112,7 @@ namespace IRCameraView
 
         private void DeviceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (camera == null) return;
             if (DeviceComboBox.SelectedIndex >= 0)
             {
                 camera.SelectDeviceByIndex(DeviceComboBox.SelectedIndex);
@@ -120,18 +122,17 @@ namespace IRCameraView
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-            var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.jpg", CreationCollisionOption.GenerateUniqueName);
+            var photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync("IRPhoto.bmp", CreationCollisionOption.GenerateUniqueName);
+            var encodingProperties = ImageEncodingProperties.CreateUncompressed(MediaPixelFormat.Bgra8);
+            //var encodingProperties = new ImageEncodingProperties
+            //{
 
-            var encodingProperties = new ImageEncodingProperties
-            {
-
-            };
+            //};
 
             using var stream = await photoFile.OpenAsync(FileAccessMode.ReadWrite);
             await camera.MediaCapture?.CapturePhotoToStreamAsync(encodingProperties, stream);
         }
 
-        static StorageFile videoFile;
 
         private async void TakeVideo_Click(object sender, RoutedEventArgs e)
         {

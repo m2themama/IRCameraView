@@ -58,7 +58,7 @@ namespace IRCameraView
 			FrameFilter = IRFrameFilter.None;
 			MappingMode = IRMappingMode.None;
 			MediaCapture = null;
-			LoadCameras(MediaFrameSourceKind.Infrared);
+			LoadCameras(MediaFrameSourceKind.Color);
 
 			if (Devices?.Count == 0)
 				throw new Exception("No infrared cameras were found.");
@@ -69,7 +69,7 @@ namespace IRCameraView
 			return LoadCameras([allowedKind]);
 		}
 
-        public List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind>? allowedKinds = null)
+		public List<MediaFrameSourceGroup> LoadCameras(List<MediaFrameSourceKind>? allowedKinds = null)
 		{
 			Devices = new List<MediaFrameSourceGroup>();
 			var frameSources = MediaFrameSourceGroup.FindAllAsync().AsTask().Result;
@@ -82,8 +82,12 @@ namespace IRCameraView
 
 			return Devices;
 		}
+        public void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = false)
+		{
+			SelectDeviceAsync(sourceGroup, exclusive).Wait();
+        }
 
-		public void SelectDevice(MediaFrameSourceGroup sourceGroup, bool exclusive = true)
+        public async Task SelectDeviceAsync(MediaFrameSourceGroup sourceGroup, bool exclusive = false)
 		{
 			if (MediaFrameReader != null)
 			{
@@ -123,13 +127,13 @@ namespace IRCameraView
 
 			MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
 			{
-				SourceGroup = SourceGroup = sourceGroup,
+				//SourceGroup = SourceGroup = sourceGroup,
 				SharingMode = exclusive ? MediaCaptureSharingMode.ExclusiveControl : MediaCaptureSharingMode.SharedReadOnly,
 				StreamingCaptureMode = StreamingCaptureMode.Video,
 				MemoryPreference = MediaCaptureMemoryPreference.Cpu,
 			};
 
-			mediaCapture.InitializeAsync(settings).AsTask().Wait();
+			await mediaCapture.InitializeAsync(settings);
 
 			
 
