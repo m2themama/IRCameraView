@@ -151,17 +151,6 @@ namespace IRCameraView
 
 			mediaCapture.InitializeAsync(settings).AsTask().Wait();
 
-			
-
-			//    MediaEncodingProfile mediaEncodingProfile = new MediaEncodingProfile();
-
-			//MediaEncodingProfile encodingProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Qvga);
-
-			//    Windows.UI.Xaml.Controls.CaptureElement
-			//var mfExtension = await mediaSink.InitializeAsync(encodingProfile.Audio, encodingProfile.Video);
-			//MediaCapture.StartPreviewToCustomSinkAsync(mediaEncodingProfile, mediaExtension);
-			//MediaCapture.StartPreviewAsync().AsTask().Wait();
-
 			var frameSources = mediaCapture.FrameSources;
 			if (frameSources.Count == 0) return;
 			var frameSource = frameSources.First().Value;

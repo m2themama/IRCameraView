@@ -57,26 +57,18 @@ namespace IRCameraView
         {
             InitializeComponent();
             camera = new CameraController();
-            //CameraNames.Add("Meowzer");
-            //Loaded += CameraPage_Loaded;
             StartCapture();
             ReloadDevices();
         }
 
         void ReloadDevices()
         {
-            // Populate ComboBox with device names
-            try
-            {
-                //DeviceComboBox.ItemsSource = camera?.GetDeviceNames();
-            }
-            catch (Exception ex)
-            {
-            }
-            var names = camera?.GetDeviceNames();
-            //if (names == null) reutnrterurn;
             DeviceComboBox.Items.Clear();
+
+            var names = camera?.GetDeviceNames();
             if (names == null) return;
+
+
             foreach (var device in names)
                 DeviceComboBox.Items.Add(device);
 
@@ -99,21 +91,14 @@ namespace IRCameraView
             var photoControl = camera.Controller.AdvancedPhotoControl;
             if (photoControl.Supported)
             {
+                    PhotoModeBox.Items.Clear();
+                    foreach (var model in photoControl.SupportedModes)
+                PhotoModeBox.Items.Add(model);
                 PhotoModeGrid.Visibility = Visibility.Visible;
-                PhotoModeBox.ItemsSource = photoControl.SupportedModes;
             }
             }
             catch { }
 
-        }
-
-        private async void CameraPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            camera = new CameraController();
-
-            DeviceComboBox.SelectionChanged -= DeviceComboBox_SelectionChanged;
-
-            DeviceComboBox.Items.Add("kak");
         }
 
         private void StartCapture()
