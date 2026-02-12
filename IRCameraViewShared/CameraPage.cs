@@ -59,8 +59,6 @@ namespace IRCameraView
             camera = new CameraController();
             StartCapture();
             ReloadDevices();
-
-            //SetEnabmeMargin();
         }
 
         void ReloadDevices()
@@ -103,7 +101,7 @@ namespace IRCameraView
 
         }
 
-        void SetEnabmeMargin()
+        void EnableMargin()
         {
             var margin = new Thickness(20);
             margin.Top += 32;
@@ -250,7 +248,7 @@ namespace IRCameraView
 
         private void PreviewModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PreviewModeBox.SelectedIndex == 1) SetEnabmeMargin();
+            if (PreviewModeBox.SelectedIndex == 1) EnableMargin();
             if (PreviewModeBox.SelectedIndex == 0) DisableMargin();
         }
 
