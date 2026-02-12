@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "project": {
-    "totalFocusTime": 607019,
-    "totalActiveTime": 48844
+    "totalFocusTime": 677256,
+    "totalActiveTime": 51392
   },
   "files": {
     "IRCameraView.sln": {
@@ -10,12 +10,16 @@
       "focus": 22049
     },
     "IRCameraView.csproj": {
-      "pending": 1530,
-      "focus": 3651020
+      "pending": 4078,
+      "focus": 4718157
     },
     "README.md": {
       "pending": 47314,
       "focus": 138618
+    },
+    "bin/win10-x64/publish/eee/IRCameraView.deps.json": {
+      "pending": 0,
+      "focus": 26064
     }
   }
 }
