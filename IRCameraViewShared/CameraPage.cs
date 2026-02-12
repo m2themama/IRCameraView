@@ -121,18 +121,30 @@ namespace IRCameraView
             sizeAnim.Duration = TimeSpan.FromMilliseconds(durationMs);
             visual.StartAnimation("Size", sizeAnim);
 
+            
+
             ImageViewbox.Stretch = (targetWidth > targetHeight) ? Stretch.Uniform : Stretch.UniformToFill;
         }
 
         void EnableMargin()
         {
-            double newWidth = ImageGrid.ActualWidth - 20 - PhotoButton.ActualWidth - PhotoButton.Margin.Left;  // example
-            double newHeight = ImageGrid.ActualHeight - 40 - SettingsViewer.ActualHeight;
+            //double newWidth = ImageGrid.ActualWidth - 20 - PhotoButton.ActualWidth - PhotoButton.Margin.Left;
+            //double newHeight = ImageGrid.ActualHeight - 40 - SettingsViewer.ActualHeight;
 
-            double offsetX = -20;
+            double offsetX = 20;
             double offsetY = 32 + 20;
+            double parentWidth = Body.ActualWidth;
+            double parentHeight = Body.ActualHeight;
 
-            AnimateImageGrid(newWidth, newHeight, offsetX, offsetY);
+            double targetWidth = parentWidth - (20 + 110);
+            double targetHeight = parentHeight - (52 + 20);
+
+            AnimateImageGrid(targetWidth, targetHeight, offsetX, offsetY);
+            //var margin = new Thickness(20);
+            //margin.Top += 32;
+            //margin.Right *= 2;
+            //margin.Right += PhotoButton.Width;
+            //ImageGrid.Margin = margin;
 
             ImageViewbox.Stretch = Stretch.Uniform;
         }
@@ -140,6 +152,7 @@ namespace IRCameraView
         void DisableMargin()
         {
             AnimateImageGrid(ImageGrid.ActualWidth, ImageGrid.ActualHeight, 0, 0);
+            //ImageGrid.Margin = new Thickness(0);
 
             ImageViewbox.Stretch = Stretch.UniformToFill;
         }
