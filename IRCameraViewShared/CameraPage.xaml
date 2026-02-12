@@ -5,10 +5,13 @@
 
     <Grid x:Name="Body">
         <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Camera" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Margin="10" HorizontalTextAlignment="Center" />
+        <Grid>
+            <TextBlock Text="Camera" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Foreground="White" FontSize="12" HorizontalTextAlignment="Center" />
+        </Grid>
         <Grid x:Name="ImageGrid">
             <Viewbox x:Name="ImageViewbox" Stretch="UniformToFill">
                 <Border CornerRadius="5">
@@ -19,7 +22,7 @@
                 </Border>
             </Viewbox>
         </Grid>
-        <Grid Grid.RowSpan="2" HorizontalAlignment="Right" Width="Auto" Margin="20">
+        <Grid Grid.RowSpan="3" HorizontalAlignment="Right" Width="Auto" Margin="20">
             <Button x:Name="PhotoButton" Click="TakePhoto_Click" Width="70" Height="70">
                 <Button.Resources>
                     <Style TargetType="Button">
@@ -34,7 +37,7 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <ScrollViewer x:Name="SettingsViewer" Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
+        <ScrollViewer x:Name="SettingsViewer" Grid.Row="2" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

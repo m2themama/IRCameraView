@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using System.Collections.ObjectModel;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+
 
 
 
@@ -131,9 +133,19 @@ namespace IRCameraView
             camera = new CameraController();
             camera.OnFrameReady += OnFrameArrived;
         }
+
+        async Task InvokeOnMainThread(Action callback)
+        {
+#if NETFX_CORE
+            await ImageElement.Dispatcher?.RunAsync(CoreDispatcherPriority.Normal ,() => callback());
+#else
+            ImageElement?.DispatcherQueue?.TryEnqueue(() => callback());
+#endif
+        }
+
         private void OnFrameArrived(SoftwareBitmap bitmap)
         {
-            if (ImageElement.Dispatcher != null) ImageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
+            InvokeOnMainThread(async () =>
             {
                 try
                 {
@@ -142,6 +154,15 @@ namespace IRCameraView
                 }
                 catch { }
             }).Wait();
+            //if (ImageElement.Dispatcher != null) ImageElement.Dispatcher.RunAsync(CoreDispatcherPriority.Normal ,async () =>
+            //{
+            //    try
+            //    {
+            //        var imageSource = (SoftwareBitmapSource)ImageElement.Source;
+            //        await imageSource.SetBitmapAsync(bitmap);
+            //    }
+            //    catch { }
+            //}).Wait();
         }
 
         private void FrameFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
