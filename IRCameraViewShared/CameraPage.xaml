@@ -10,11 +10,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid>
-            <!--<TextBlock Text="Camera" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center"/>-->
+            <TextBlock Text="Camera" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,0,0,0" VerticalAlignment="Center"/>
         </Grid>
-        <Grid x:Name="ImageGrid" Grid.Row="1">
+        <Grid x:Name="ImageGrid" Grid.RowSpan="2">
             <Viewbox x:Name="ImageViewbox" Stretch="UniformToFill">
-                <Border CornerRadius="5">
+                <Border CornerRadius="6">
                     <Grid>
                     <Image x:Name="ImageElement" />
                     <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
