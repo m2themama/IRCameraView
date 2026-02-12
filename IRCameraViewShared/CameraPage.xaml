@@ -9,6 +9,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Image x:Name="imageElement" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Grid x:Name="FlashOverlay" Background="White" Opacity="0" IsHitTestVisible="False"/>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled">
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>

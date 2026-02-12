@@ -279,14 +279,13 @@ namespace IRCameraView
 				SoftwareBitmap hi;
 				while ((hi = Interlocked.Exchange(ref _backBuffer, null)) != null)
 				{
-					LatestBitmap = SoftwareBitmap.Copy(hi);
 
                     if (MappingMode == IRMappingMode.Green)
-                        LatestBitmap = ConvertToGreenOnly(LatestBitmap);
+                        hi = ConvertToGreenOnly(hi);
 
 					var isIlluminated = videoMediaFrame.InfraredMediaFrame.IsIlluminated; // This filter gives a similar result to having the torch enabled or disabled even if we can't control the torch. (It halves framerate tho)
 					if (OnFrameReady != null && (FrameFilter == IRFrameFilter.None || (!isIlluminated && FrameFilter == IRFrameFilter.Raw) || (isIlluminated && FrameFilter == IRFrameFilter.Illuminated)))
-						OnFrameReady(LatestBitmap);
+						OnFrameReady(LatestBitmap = SoftwareBitmap.Copy(hi));
 				}
 
                 softwareBitmap?.Dispose();

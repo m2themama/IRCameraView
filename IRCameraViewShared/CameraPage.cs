@@ -16,6 +16,8 @@ using Windows.Media.Capture.Frames;
 using Microsoft.UI.Xaml.Media.Imaging;
 
 using Windows.Graphics.Imaging;
+using System.Threading.Tasks;
+
 
 #if NETFX_CORE
 // UWP code
@@ -30,6 +32,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 #endif
 
@@ -113,6 +116,7 @@ namespace IRCameraView
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
             camera.CaptureImage();
+            FlashScreenAsync();
         }
 
 
@@ -168,6 +172,27 @@ namespace IRCameraView
                 };
                 await successDialog.ShowAsync();
             }
+        }
+
+        private async Task FlashScreenAsync()
+        {
+            FlashOverlay.Opacity = 1;
+            await Task.Delay(100);
+
+            var fadeDuration = TimeSpan.FromMilliseconds(200);
+            var animation = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = new Duration(fadeDuration)
+            };
+            var storyboard = new Storyboard();
+            storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, FlashOverlay);
+            Storyboard.SetTargetProperty(animation, "Opacity");
+            storyboard.Begin();
+
+            await Task.Delay((int)fadeDuration.TotalMilliseconds);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
