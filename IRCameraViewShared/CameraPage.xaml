@@ -18,7 +18,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Spacing="10" Orientation="Horizontal">
-                    <ComboBox x:Name="DeviceComboBox" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="DeviceComboBox" SelectionChanged="DeviceComboBox_SelectionChanged" VerticalAlignment="Center"/>
                     <ComboBox x:Name="CameraType" SelectedIndex="0" SelectionChanged="CameraType_SelectionChanged" VerticalAlignment="Center">
                         <ComboBoxItem>Infrared</ComboBoxItem>
                         <ComboBoxItem>Color</ComboBoxItem>

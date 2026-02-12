@@ -56,7 +56,7 @@ namespace IRCameraView
             InitializeComponent();
             camera = new CameraController();
             //CameraNames.Add("Meowzer");
-            Loaded += CameraPage_Loaded;
+            //Loaded += CameraPage_Loaded;
             StartCapture();
             ReloadDevices();
         }
@@ -71,10 +71,20 @@ namespace IRCameraView
             catch (Exception ex)
             {
             }
-            //if (DeviceComboBox.Items.Count > 0)
-            //    DeviceComboBox.SelectedIndex = 0;
+            var names = camera?.GetDeviceNames();
+            //if (names == null) reutnrterurn;
+            DeviceComboBox.Items.Clear();
+            if (names == null) return;
+            foreach (var device in names)
+                DeviceComboBox.Items.Add(device);
+
+            if (DeviceComboBox.Items.Count > 0)
+                DeviceComboBox.SelectedIndex = 0;
 
             if (camera?.Controller == null) return;
+
+            try
+            {
 
             InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
 
@@ -90,6 +100,9 @@ namespace IRCameraView
                 PhotoModeGrid.Visibility = Visibility.Visible;
                 PhotoModeBox.ItemsSource = photoControl.SupportedModes;
             }
+            }
+            catch { }
+
         }
 
         private async void CameraPage_Loaded(object sender, RoutedEventArgs e)
@@ -100,19 +113,6 @@ namespace IRCameraView
 
             DeviceComboBox.Items.Add("kak");
         }
-
-            //ReloadDevices();
-        //    Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-        //    {
-        //        DeviceComboBox.SelectedIndex = -1;
-        //    DeviceComboBox.ItemsSource = null;
-
-
-        //    DeviceComboBox.ItemsSource = CameraNames;
-
-        //    DeviceComboBox.SelectionChanged += DeviceComboBox_SelectionChanged;
-        //    });
-        //}
 
         private void StartCapture()
         {
