@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "project": {
-    "totalFocusTime": 677256,
-    "totalActiveTime": 53922
+    "totalFocusTime": 736380,
+    "totalActiveTime": 168515
   },
   "files": {
     "IRCameraView.sln": {
@@ -10,16 +10,24 @@
       "focus": 22049
     },
     "IRCameraView.csproj": {
-      "pending": 6608,
-      "focus": 5532964
+      "pending": 7111,
+      "focus": 8746611
     },
     "README.md": {
-      "pending": 47314,
-      "focus": 138618
+      "pending": 161404,
+      "focus": 472623
     },
     "bin/win10-x64/publish/eee/IRCameraView.deps.json": {
       "pending": 0,
-      "focus": 26064
+      "focus": 32932
+    },
+    "Package.appxmanifest": {
+      "pending": 0,
+      "focus": 3110
+    },
+    "IRCameraViewUWP/Package.appxmanifest": {
+      "pending": 0,
+      "focus": 1813
     }
   }
 }
