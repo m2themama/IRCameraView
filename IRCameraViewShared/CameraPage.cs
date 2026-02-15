@@ -73,23 +73,22 @@ namespace IRCameraView
 
             try
             {
+                InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
 
-            InfraredTorchControl torchControl = camera.Controller.InfraredTorchControl;
+                if (torchControl.IsSupported)
+                {
+                    TorchControlGrid.Visibility = Visibility.Visible;
+                    IRTorchBox.ItemsSource = torchControl.SupportedModes;
+                }
 
-            if (torchControl.IsSupported)
-            {
-                TorchControlGrid.Visibility = Visibility.Visible;
-                IRTorchBox.ItemsSource = torchControl.SupportedModes;
-            }
-
-            var photoControl = camera.Controller.AdvancedPhotoControl;
-            if (photoControl.Supported)
-            {
-                    PhotoModeBox.Items.Clear();
-                    foreach (var model in photoControl.SupportedModes)
-                PhotoModeBox.Items.Add(model);
-                PhotoModeGrid.Visibility = Visibility.Visible;
-            }
+                var photoControl = camera.Controller.AdvancedPhotoControl;
+                if (photoControl.Supported)
+                {
+                        PhotoModeBox.Items.Clear();
+                        foreach (var model in photoControl.SupportedModes)
+                    PhotoModeBox.Items.Add(model);
+                    PhotoModeGrid.Visibility = Visibility.Visible;
+                }
             }
             catch { }
 

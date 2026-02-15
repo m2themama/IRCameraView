@@ -14,13 +14,13 @@ namespace IRCameraViewUWP
         public MainPage()
         {
             InitializeComponent();
-            MainFrame.Navigate(typeof(CameraPage));
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            MainFrame.Navigate(typeof(CameraPage));
         }
     }
 }
